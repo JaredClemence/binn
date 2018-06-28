@@ -1,0 +1,16 @@
+{
+    "name": "jaredclemence/binn",
+    "description": "A PHP implementation of the binn file format.",
+    "authors": [
+        {
+            "name": "Jared R Clemence",
+            "email": "jaredclemence@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-0": {
+            "JRC\\binn": "src"
+        }
+    }
+}

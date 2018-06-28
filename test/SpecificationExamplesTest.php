@@ -8,6 +8,8 @@
 
 use PHPUnit\Framework\TestCase;
 
+require_once realpath( __DIR__ . '/../autoload.php' );
+
 /**
  * Description of SpecificationExamplesTest
  *

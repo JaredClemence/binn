@@ -9,8 +9,8 @@
     ],
     "require": {},
     "autoload": {
-        "psr-0": {
-            "JRC\\binn": "src"
+        "psr-4": {
+            "JRC\\binn\\": "src/"
         }
     }
 }

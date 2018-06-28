@@ -19,41 +19,36 @@ class Type {
     public $sub_type_size; //4th bit first byte
     public $sub_type; //4 or 12 bits
 
-    public function __construct($storageType, $subTypeSize, $subType) {
-        $this->storage_type = $storageType;
-        $this->sub_type_size = $subTypeSize;
-        $this->sub_type = $subType;
+    public function __construct() {
+        $this->storage_type = "";
+        $this->sub_type_size = "";
+        $this->sub_type = "";
     }
 
     public function getByteString() {
-        $typeCode = ( $this->storage_type << 1 );
-        $subTypeLength = $this->sub_type_size & 0x01;
-        $firstFourBits = $typeCode | $subTypeLength;
-        $byteString = null;
-        if ($this->sub_type_size & 0x01) {
-            //long subtype
-            $lastTwelveBits = 0x0FFF & $this->sub_type;
-            $byteString = ( $firstFourBits << 12 ) | $lastTwelveBits;
-        } else {
-            //short subtype
-            $lastFourBits = 0x0F & $this->sub_type;
-            $byteString = ( $firstFourBits << 4 ) | $lastFourBits;
+        $byteString = "";
+        $firstByte = $this->storage_type | $this->sub_type_size;
+        if( strlen( $this->sub_type_size ) == 2 ){
+            $twoByte = $firstByte << 8;
+            $twoByte |= $this->sub_type_size;
+            $byteString = $twoByte;
+        }else{
+            $firstByte |= $this->sub_type_size;
+            $byteString = $firstByte;
         }
         return $byteString;
     }
 
-    public function setByteString($byte) {
-        $firstByte = substr($byte, 0, 1);
-        $secondByte = substr($byte, 1, 1);
-        $subType = 0x0F & $firstByte;
-        $subTypeLength = ($firstByte >> 4) & 0x01;
-        $storageType = ($firstByte >> 5 ) & 0x07;
-        if ($subTypeLength & 0x01) {
-            $subType = ($subType << 8) | $secondByte;
+    public function setByteString($byteString) {
+        $firstByte = substr($byteString, 0, 1);
+        $this->storage_type = $firstByte & "\xE0";
+        $this->sub_type_size = $firstByte & "\x10";
+        if( ord( $this->sub_type_size ) > 0 ){
+            $twoBytes = substr( $byteString, 0, 2 );
+            $this->sub_type = $twoBytes & "\x0FFF";
+        }else{
+            $this->sub_type = $firstByte & "\x0F";
         }
-        $this->storage_type = $storageType;
-        $this->sub_type_size = $subTypeLength;
-        $this->sub_type = $subType;
     }
     
     /**
@@ -69,23 +64,36 @@ class Type {
         $default = -1;
         $length = $default;
         switch( $this->storage_type ) {
-            case StorageType::$NOBYTES:
+            case StorageType::NOBYTES:
                 $length = 0;
                 break;
-            case StorageType::$BYTE:
+            case StorageType::BYTE:
                 $length = 1;
                 break;
-            case StorageType::$WORD:
+            case StorageType::WORD:
                 $length = 2;
                 break;
-            case StorageType::$DWORD:
+            case StorageType::DWORD:
                 $length = 4;
                 break;
-            case StorageType::$QWORD:
+            case StorageType::QWORD:
                 $length = 8;
                 break;
         }
         return $length;
+    }
+    
+    /**
+     * Use StorageType constants as the input.
+     * 
+     * @param int $typeMask  \\JRC\\bin\\StorageType::{value}
+     * @return bool
+     */
+    public function isType( $typeMask ){
+        $threeBit = $this->storage_type;
+        $fourBit = $threeBit << 1;
+        $eightBit = $fourBit << 4;
+        return $typeMask == $eightBit;
     }
 
 }

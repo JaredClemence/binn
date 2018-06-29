@@ -8,6 +8,7 @@
 
 namespace JRC\binn;
 
+use JRC\binn\BinaryStringAtom;
 /**
  * A bin number is one or four bytes. The smallest byte size should be used. To indicate 
  * whether four bytes are expected, the first bit is used as a flag.
@@ -17,7 +18,7 @@ namespace JRC\binn;
  *
  * @author jaredclemence
  */
-class BinnNumber {
+class BinnNumber extends BinaryStringAtom {
 
     public $firstBit;
     public $size;
@@ -56,6 +57,7 @@ class BinnNumber {
     }
 
     public function setByteString($bytes) {
+        if( is_numeric($bytes) ) $bytes = $this->getBinaryStringFromInt($bytes, $minSize);
         $firstByte = substr($bytes, 0, 1);
         $firstBit = $firstByte & "\x80";
         $firstBit = (ord( $firstBit ) >> 7 );
@@ -78,18 +80,6 @@ class BinnNumber {
         $this->convertSizeToInt();
     }
     
-    private function outputBinary( $string ){
-        for( $i = 0; $i < strlen( $string ); $i++ ){
-            $char = $string[$i];
-            $val = ord( $char );
-            $binString = decbin( $val );
-            while( strlen($binString ) < 8 ){
-                $binString = "0" . $binString;
-            }
-            echo $binString . " ";
-        }
-    }
-    
     private function convertSizeToInt(){
         if( is_string( $this->size ) ){
             $chars = $this->size;
@@ -102,24 +92,6 @@ class BinnNumber {
             }
             $this->size = $int;
         }
-    }
-    
-    private function getBinaryStringFromInt( $size, $minSize = 1 ){
-        $binaryString = "";
-        while( $size > 0 ){
-            $temp = $size;
-            $temp >>= 8;
-            $temp <<= 8;
-            $nextChar = $size - $temp;
-            $char = chr( $nextChar );
-            $binaryString = $char . $binaryString;
-            $size >>= 8;
-        }
-        $nullByte = "\x00";
-        while( strlen( $binaryString ) < $minSize ){
-            $binaryString = $nullByte . $binaryString;
-        }
-        return $binaryString;
     }
 
     public function getValue() {

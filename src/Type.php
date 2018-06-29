@@ -7,13 +7,13 @@
  */
 
 namespace JRC\binn;
-
+use JRC\binn\BinaryStringAtom;
 /**
  * Description of Type
  *
  * @author jaredclemence
  */
-class Type {
+class Type extends BinaryStringAtom  {
 
     public $storage_type; //3 bits first byte
     public $sub_type_size; //4th bit first byte
@@ -40,6 +40,7 @@ class Type {
     }
 
     public function setByteString($byteString) {
+        if( is_numeric( $byteString ) ) $byteString = $this->getBinaryStringFromInt ($byteString, 1);
         $firstByte = substr($byteString, 0, 1);
         $this->storage_type = $firstByte & "\xE0";
         $this->sub_type_size = $firstByte & "\x10";

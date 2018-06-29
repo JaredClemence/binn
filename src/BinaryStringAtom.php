@@ -51,6 +51,26 @@ abstract class BinaryStringAtom {
         $byteRepresentation = trim( $byteRepresentation );
         return $byteRepresentation;
     }
+    
+    public static function createHumanReadableHexRepresentation( $value, $minBytes = 1 ){
+        $binaryString = self::convertValueToBinaryString( $value );
+        while( strlen( $binaryString ) < $minBytes ){
+            $binaryString = "\x00" . $binaryString;
+        }
+        $length = strlen( $binaryString );
+        $hexRepresentation = "";
+        for( $i = 0; $i < $length; $i++ ){
+            $char = $binaryString[$i];
+            $val = ord( $char );
+            $hexString = dechex($val);
+            while( strlen( $hexString ) < 2 ){
+                $hexString = "0" . $hexString;
+            }
+            $hexRepresentation .= $hexString . " ";
+        }
+        $hexRepresentation = trim( $hexRepresentation );
+        return $hexRepresentation;
+    }
 
     private static function convertValueToBinaryString($value) {
         if( is_numeric($value) ){ $value = $this->getBinaryStringFromInt($value, 1); }

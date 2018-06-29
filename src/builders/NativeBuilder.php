@@ -22,8 +22,19 @@ abstract class NativeBuilder {
         self::addToRegistry( $fullyQualifiedType, $builderInstance );
     }
     
-    public function read( $count, $data ){
-        
+    public final function read( $count, $data ){
+        $this->setCount( $count );
+        $this->setData( $data );
+    }
+    
+    protected final function setCount( $count ){
+        $this->count = $count;
+    }
+    protected final function setData( $data ){
+        $this->data = $data;
+    }
+    protected final function getData(){
+        return $this->data;
     }
     
     public function make(){

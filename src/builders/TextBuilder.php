@@ -7,12 +7,27 @@
  */
 
 namespace JRC\binn\builders;
-
+use JRC\binn\builders\NativeBuilder;
 /**
  * Description of TextBuilder
  *
  * @author jaredclemence
  */
-class TextBuilder {
-    //put your code here
+class TextBuilder extends NativeBuilder {
+    public function make(){
+        $data = $this->getData();
+        $string = $this->convertDataToString($data);
+        return $string;
+    }
+
+    public function convertDataToString($data) {
+        $string = $data;
+        $lastCharIndex = strlen( $data ) - 1;
+        $lastChar = $data[ $lastCharIndex ];
+        if( ord($lastChar) == 0 ){
+            $string = substr( $data, 0, $lastCharIndex );
+        }
+        return $string;
+    }
+
 }

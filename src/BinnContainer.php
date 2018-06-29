@@ -64,4 +64,9 @@ class BinnContainer {
         $count->setByteString($this->count);
         return $type->getByteString() . $size->getByteString() . $count->getByteString() . $this->data;
     }
+
+    public function getType() {
+        return $this->type;
+    }
+
 }

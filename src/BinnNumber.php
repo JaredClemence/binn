@@ -23,6 +23,8 @@ class BinnNumber {
     public $size;
 
     public function getByteString() {
+        if( $this->size == 0 ) return "";
+        
         $this->determinePropperFirstBitSetting();
         return $this->constructByteString();
     }
@@ -36,37 +38,92 @@ class BinnNumber {
     }
 
     private function constructByteString() {
-        $firstBit = $this->size & 0x01;
-        $byteString = null;
+        $firstBit = $this->firstBit;
+        $byteString = "";
         if ($firstBit) {
             //use 4 bytes
-            $firstBit = $firstBit << 31;
-            $size = $this->size & 0x7FFFFFFF;
-            $byteString = $firstBit | $size;
+            $firstBitString = $this->getBinaryStringFromInt($firstBit << 31, 4);
+            $binarySize = $this->getBinaryStringFromInt($this->size, 4);
+            $size = $binarySize & ("\x7F\xFF\xFF\xFF");
+            $byteString = $firstBitString | $size;
         } else {
-            $firstBit = $firstBIt << 7;
-            $size = $this->size & 0x7F;
-            $byteString = $firstBit | $size;
+            $firstBitString = $this->getBinaryStringFromInt($firstBit << 7, 1);
+            $binarySize = $this->getBinaryStringFromInt($this->size, 1);
+            $size = $binarySize & ("\x7F");
+            $byteString = $firstBitString | $size;
         }
         return $byteString;
     }
 
     public function setByteString($bytes) {
         $firstByte = substr($bytes, 0, 1);
-        $firstBit = ($firstByte >> 7) & 0x01;
+        $firstBit = $firstByte & "\x80";
+        $firstBit = (ord( $firstBit ) >> 7 );
         $this->firstBit = $firstBit;
         $force4Byte = false;
         if ($firstBit == 0) {
             //use short size
-            $this->size = 0x7F & $firstByte;
+            $this->size = ord( "\x7F" & $firstByte );
             if( $this->size == 0 ) $force4Byte = true;
         }
         
         if( $firstBit != 0 || $force4Byte == true )
         {
             //use long size
-            $this->size = 0x7FFFFFFF & substr($bytes, 0, 4);
+            $fourBytes = substr($bytes, 0, 4);
+            $this->size = "\x7F\xFF\xFF\xFF" & $fourBytes;
         }
+        
+        if( $this->size == "" ) $this->size = 0;
+        $this->convertSizeToInt();
+    }
+    
+    private function outputBinary( $string ){
+        for( $i = 0; $i < strlen( $string ); $i++ ){
+            $char = $string[$i];
+            $val = ord( $char );
+            $binString = decbin( $val );
+            while( strlen($binString ) < 8 ){
+                $binString = "0" . $binString;
+            }
+            echo $binString . " ";
+        }
+    }
+    
+    private function convertSizeToInt(){
+        if( is_string( $this->size ) ){
+            $chars = $this->size;
+            $int = 0;
+            for( $i = 0; $i < strlen( $chars ); $i++ ){
+                $char = $chars[$i];
+                $ord = ord( $char );
+                $int <<= 8;
+                $int += $ord;
+            }
+            $this->size = $int;
+        }
+    }
+    
+    private function getBinaryStringFromInt( $size, $minSize = 1 ){
+        $binaryString = "";
+        while( $size > 0 ){
+            $temp = $size;
+            $temp >>= 8;
+            $temp <<= 8;
+            $nextChar = $size - $temp;
+            $char = chr( $nextChar );
+            $binaryString = $char . $binaryString;
+            $size >>= 8;
+        }
+        $nullByte = "\x00";
+        while( strlen( $binaryString ) < $minSize ){
+            $binaryString = $nullByte . $binaryString;
+        }
+        return $binaryString;
+    }
+
+    public function getValue() {
+        return $this->size;
     }
 
 }

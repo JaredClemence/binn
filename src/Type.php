@@ -31,10 +31,10 @@ class Type extends BinaryStringAtom  {
         if( strlen( $this->sub_type_size ) == 2 ){
             $twoByte = $firstByte << 8;
             $twoByte |= $this->sub_type_size;
-            $byteString = $twoByte;
+            $byteString = $twoByte | $this->sub_type;
         }else{
             $firstByte |= $this->sub_type_size;
-            $byteString = $firstByte;
+            $byteString = $firstByte | $this->sub_type;
         }
         return $byteString;
     }
@@ -46,7 +46,7 @@ class Type extends BinaryStringAtom  {
         $this->sub_type_size = $firstByte & "\x10";
         if( ord( $this->sub_type_size ) > 0 ){
             $twoBytes = substr( $byteString, 0, 2 );
-            $this->sub_type = $twoBytes & "\x0FFF";
+            $this->sub_type = $twoBytes & "\x0F\xFF";
         }else{
             $this->sub_type = $firstByte & "\x0F";
         }
@@ -91,10 +91,8 @@ class Type extends BinaryStringAtom  {
      * @return bool
      */
     public function isType( $typeMask ){
-        $threeBit = $this->storage_type;
-        $fourBit = $threeBit << 1;
-        $eightBit = $fourBit << 4;
-        return $typeMask == $eightBit;
+        $filtered = $this->storage_type & "\xE0";
+        return $typeMask == $filtered;
     }
 
 }

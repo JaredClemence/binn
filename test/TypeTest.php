@@ -27,7 +27,8 @@ class TypeTest extends TestCase{
             "Blob"=>[StorageType::BLOB],
             "Byte"=>[StorageType::BYTE],
             "Container"=>[StorageType::CONTAINER],
-            "Dword"=>[StorageType::DWORD]
+            "Dword"=>[StorageType::DWORD],
+            "Object (container)"=>[StorageType::CONTAINER | "\x02"],
         ];
     }
     /**

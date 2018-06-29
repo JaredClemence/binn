@@ -32,5 +32,29 @@ abstract class BinaryStringAtom {
         return $binaryString;
     }
     
-    
+    public static function createHumanReadableBinaryRepresentation( $value, $minBytes = 1 ){
+        $binaryString = self::convertValueToBinaryString( $value );
+        while( strlen( $binaryString ) < $minBytes ){
+            $binaryString = "\x00" . $binaryString;
+        }
+        $length = strlen( $binaryString );
+        $byteRepresentation = "";
+        for( $i = 0; $i < $length; $i++ ){
+            $char = $binaryString[$i];
+            $val = ord( $char );
+            $binString = decbin( $val );
+            while( strlen( $binString ) < 8 ){
+                $binString = "0" . $binString;
+            }
+            $byteRepresentation .= $binString . " ";
+        }
+        $byteRepresentation = trim( $byteRepresentation );
+        return $byteRepresentation;
+    }
+
+    private static function convertValueToBinaryString($value) {
+        if( is_numeric($value) ){ $value = $this->getBinaryStringFromInt($value, 1); }
+        return $value;
+    }
+
 }

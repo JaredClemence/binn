@@ -14,7 +14,7 @@ namespace JRC\binn;
  * @author jaredclemence
  */
 abstract class BinaryStringAtom {
-    protected function getBinaryStringFromInt( $size, $minSize = 1 ){
+    protected static function getBinaryStringFromInt( $size, $minSize = 1 ){
         $binaryString = "";
         while( $size > 0 ){
             $temp = $size;
@@ -73,7 +73,7 @@ abstract class BinaryStringAtom {
     }
 
     private static function convertValueToBinaryString($value) {
-        if( is_numeric($value) ){ $value = $this->getBinaryStringFromInt($value, 1); }
+        if( is_numeric($value) ){ $value = self::getBinaryStringFromInt($value, 1); }
         return $value;
     }
 

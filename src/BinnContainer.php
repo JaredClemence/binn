@@ -32,11 +32,25 @@ class BinnContainer {
         $this->type = $type;
     }
     public function setSize( $size ){
+        if( is_numeric( $size ) ){
+            //size will convert values to bytestrings automatically
+            $sizeAtom = new Size();
+            $sizeAtom->setByteString($size);
+            $size = $sizeAtom->getByteString();
+        }
         $this->size = $size;
     }
+    
     public function setCount( $count ){
+        if( is_numeric( $size ) ){
+            //size will convert values to bytestrings automatically
+            $countAtom = new Count();
+            $countAtom->setByteString($size);
+            $size = $countAtom->getByteString();
+        }
         $this->count = $count;
     }
+    
     public function setData( $data ){
         $this->data = $data;
     }

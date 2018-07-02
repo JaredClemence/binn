@@ -8,23 +8,46 @@
 
 namespace JRC\binn\builders;
 use JRC\binn\builders\NativeBuilder;
+use JRC\binn\BinaryStringAtom;
 /**
  * Description of NumericBuilder
  *
  * @author jaredclemence
  */
 abstract class NumericBuilder extends NativeBuilder {
+    private $bytes;
+    
+    public function __construct( $bytes ) {
+        $this->bytes = $bytes;
+    }
+    
+    protected function getByteLength(){
+        
+    }
+    
     protected function isNegative( $binaryString ){
         $firstByte = substr( $binaryString, 0, 1 );
         $negativeFlag = $binaryString & "\x80";
         $isNegative = ord($negativeFlag) == 128;
         return $isNegative;
     }
-    protected function getTwosComplement( $binaryString ){
+    
+    protected function getTwosComplement( $int ){
         $length = strlen( $binaryString );
         $positive = ~$binaryString;
         $result = $this->addOneToBinaryString( $positive );
         return $result;
+    }
+    
+    protected function convertBinaryToInteger( $data ){
+        $value = 0;
+        $length = strlen( $data );
+        for($i=0;$i<$length;$i++){
+            $char = $data[$i];
+            $value <<= 8;
+            $value += ord( $char );
+        }
+        return $value;
     }
 
     private function addOneToBinaryString($binaryString) {
@@ -59,6 +82,11 @@ abstract class NumericBuilder extends NativeBuilder {
             } 
         }
         return $currentByte;
+    }
+    
+    private function calculateBias( $nBits ){
+        $bias = pow(2, ($nBits-1)) - 1;
+        return $bias;
     }
 
 }

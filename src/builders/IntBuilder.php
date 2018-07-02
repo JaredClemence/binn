@@ -14,5 +14,5 @@ use JRC\binn\builders\NumericBuilder;
  * @author jaredclemence
  */
 class IntBuilder extends NumericBuilder {
-    //put your code here
+    
 }

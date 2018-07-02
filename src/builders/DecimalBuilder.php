@@ -14,5 +14,9 @@ use JRC\binn\builders\NumericBuilder;
  * @author jaredclemence
  */
 class DecimalBuilder extends NumericBuilder {
-    //put your code here
+    private $signBitLength;
+    private $exponentBitLength;
+    private $mantissaBitLength;
+    
+    public function __construct( $bytes ){}
 }

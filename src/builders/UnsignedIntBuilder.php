@@ -14,5 +14,9 @@ use JRC\binn\builders\NumericBuilder;
  * @author jaredclemence
  */
 class UnsignedIntBuilder extends NumericBuilder {
-    //put your code here
+    public function make(){
+        $data = $this->getData();
+        $int = $this->convertBinaryToInteger( $data );
+        return $int;
+    }
 }

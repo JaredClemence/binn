@@ -37,7 +37,7 @@ abstract class NumericBuilder extends NativeBuilder {
         return $isNegative;
     }
     
-    protected function getTwosComplement( $int ){
+    protected function getTwosComplement( $binaryString ){
         $flipped = ~$binaryString;
         $result = $this->addOneToBinaryString( $flipped );
         return $result;

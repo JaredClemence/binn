@@ -16,6 +16,13 @@ use JRC\binn\builders\NumericBuilder;
 class IntBuilder extends NumericBuilder {
     public function make(){
         $data = $this->getData();
-        
+        $multiplier = 1;
+        if( $this->isNegative( $data ) ){
+            $data = $this->getTwosComplement($data);
+            $multiplier = -1;
+        }
+        $value = $this->convertBinaryToInteger($data);
+        $signedValue = $multiplier * $value;
+        return $signedValue;
     }
 }

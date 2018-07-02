@@ -10,7 +10,7 @@ require_once realpath( __DIR__ . '/../autoload.php' );
  *
  * @author jaredclemence
  */
-class IntBuilderTest {
+class IntBuilderTest extends TestCase{
     /**
      * @param type $size
      * @param type $count
@@ -34,8 +34,8 @@ class IntBuilderTest {
             [4,0,"\x22\xCF\x8A\xE8",584026856],
             //Unable to maximize use of bit field due to average system limitations. 64-bit unsigned ints are not able to have all bits set. 9E18 is the max.
             [8,0,"\x7C\xE6\x6C\x50\xE2\x84\x00\x00", 9000000000000000000],
-            [8,0,"\xFC\xE6\x6C\x50\xE2\x84\x00\x00", -223372036854775809],
-            [8,0,"\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF", 1],
+            [8,0,"\xFC\xE6\x6C\x50\xE2\x84\x00\x00", -223372036854775808],
+            [8,0,"\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF", -1],
             [8,0,"\x00\x00\x00\x00\x00\x00\x00\x00", 0],
         ];
     }

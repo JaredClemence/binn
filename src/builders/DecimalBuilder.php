@@ -9,6 +9,7 @@
 namespace JRC\binn\builders;
 
 use JRC\binn\builders\NumericBuilder;
+use JRC\binn\BinaryStringAtom;
 
 /**
  * Description of DecimalBuilder
@@ -66,7 +67,10 @@ abstract class DecimalBuilder extends NumericBuilder {
         return $bias;
     }
 
-    private function extractMantissa($data) {
+    /**
+     * Public for unit test
+     */
+    public function extractMantissa($data) {
         $signAndExponent = $this->extractSignAndExponentFromData($data);
         $mask = ~$signAndExponent;
         $mantissa = $data & $mask;
@@ -76,8 +80,10 @@ abstract class DecimalBuilder extends NumericBuilder {
     private function extractBiasedExponent($data) {
         $signAndExponent = $this->extractSignAndExponentFromData($data);
         $exponentOnly = $this->removeSignBit($signAndExponent);
+        //convert exponent to integer value
+        $paddedExponentValue = $this->convertBinaryToInteger($exponentOnly);
         //right align exponent to get biased Exponent
-        $biasedExponent = $exponentOnly >> $this->mantissaBitLength;
+        $biasedExponent = $paddedExponentValue >> $this->mantissaBitLength;
         return $biasedExponent;
     }
 
@@ -85,6 +91,7 @@ abstract class DecimalBuilder extends NumericBuilder {
         $maskLength = $this->signBitLength + $this->exponentBitLength;
         $byteLength = $this->getByteLength();
         $mask = $this->makeFrontSideMask($maskLength, $byteLength);
+        $signAndExponent = $data & $mask;
         return $signAndExponent;
     }
 
@@ -103,21 +110,26 @@ abstract class DecimalBuilder extends NumericBuilder {
         $maskValue = 0;
         $bitLength = $byteLength * 8;
         $maskString = "";
+        $valueStore = 0;
         for ($i = 0; $i < $bitLength; $i++) {
             $maskValue <<= 1;
             if ($i < $maskLength) {
                 $maskValue += 1;
             }
-            if ($i % 8 == 0) {
+            $valueStore++;
+            $binRep = BinaryStringAtom::createHumanReadableBinaryRepresentation($maskValue);
+            if ($valueStore == 8) {
                 $char = chr($maskValue);
                 $maskString .= $char;
                 $maskValue = 0;
+                $valueStore = 0;
             }
         }
-        //capture the last value
-        $char = chr($maskValue);
-        $maskString .= $char;
-        $maskValue = 0;
+        if( $valueStore == 8 ){
+            $char = chr($maskValue);
+            $maskString .= $char;
+            $maskValue = 0;
+        }
         return $maskString;
     }
 

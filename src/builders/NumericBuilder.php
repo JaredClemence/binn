@@ -22,7 +22,7 @@ abstract class NumericBuilder extends NativeBuilder {
     }
     
     protected function getByteLength(){
-        
+        return $this->bytes;
     }
     
     /**

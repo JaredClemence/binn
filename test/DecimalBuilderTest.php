@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use JRC\binn\builders\FloatBuilder;
+use JRC\binn\BinaryStringAtom;
 
 require_once realpath( __DIR__ . '/../autoload.php' );
 
@@ -81,7 +82,9 @@ class DecimalBuilderTest extends TestCase {
     public function testFrontSideMask( $maskLength, $byteLength, $expectedMask ){
         $builder = new FloatBuilder();
         $mask = $builder->makeFrontSideMask($maskLength, $byteLength);
-        $this->assertEquals( decbin( $expectedMask ), decbin( $mask ), "The front sided mask generator failed to produce the expected result." );
+        $expectedString = BinaryStringAtom::createHumanReadableBinaryRepresentation($expectedMask);
+        $maskString = BinaryStringAtom::createHumanReadableBinaryRepresentation($mask);
+        $this->assertEquals( $expectedString, $maskString, "The front sided mask generator failed to produce the expected result." );
     }
     public function provideFrontSideMaskCases(){
         return [
@@ -91,6 +94,21 @@ class DecimalBuilderTest extends TestCase {
             [10,2,"\xFF\xC0"],
             [12,2,"\xFF\xF0"],
             [12,4,"\xFF\xF0\x00\x00"],
+            [9,4,"\xFF\x80\x00\x00"],
+        ];
+    }
+    
+    /**
+     * @dataProvider provideMantissaTestCases
+     */
+    public function testExtractMantissa( $data, $expectedMantissa ){
+        $builder = new FloatBuilder();
+        $mantissa = $builder->extractMantissa( $data );
+        $this->assertEquals(BinaryStringAtom::createHumanReadableHexRepresentation($expectedMantissa),BinaryStringAtom::createHumanReadableHexRepresentation($mantissa));
+    }
+    public function provideMantissaTestCases(){
+        return [
+            ["\xBA\xEF\xAA\xE0","\x00\x6F\xAA\xE0"]
         ];
     }
 }

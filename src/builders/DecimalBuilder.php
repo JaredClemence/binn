@@ -7,12 +7,12 @@
  */
 
 namespace JRC\binn\builders;
-
+use JRC\binn\builders\NumericBuilder;
 /**
  * Description of DecimalBuilder
  *
  * @author jaredclemence
  */
-class DecimalBuilder {
+class DecimalBuilder extends NumericBuilder {
     //put your code here
 }

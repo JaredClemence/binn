@@ -7,12 +7,12 @@
  */
 
 namespace JRC\binn\builders;
-
+use JRC\binn\builders\NumericBuilder;
 /**
  * Description of IntBuilder
  *
  * @author jaredclemence
  */
-class IntBuilder {
+class IntBuilder extends NumericBuilder {
     //put your code here
 }

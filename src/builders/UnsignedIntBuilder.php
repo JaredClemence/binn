@@ -7,12 +7,12 @@
  */
 
 namespace JRC\binn\builders;
-
+use JRC\binn\builders\NumericBuilder;
 /**
  * Description of UnsignedIntBuilder
  *
  * @author jaredclemence
  */
-class UnsignedIntBuilder {
+class UnsignedIntBuilder extends NumericBuilder {
     //put your code here
 }

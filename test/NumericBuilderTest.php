@@ -20,7 +20,7 @@ class NumericBuilderTest extends TestCase {
      * @dataProvider providerByteIncrementerTests
      */
     public function testByteIncrementerFunction( $byte, $carry, $expectedCarry, $expectedByte ){
-        $builder = new IntBuilder();
+        $builder = new IntBuilder(8);
         $resultByte = $builder->addOneToBytePreserveCarry($byte, $carry);
         $this->assertEquals($expectedCarry, $carry, "The carry bit did not resolve to the expected result.");
         $this->assertEquals(decbin( ord($expectedByte ) ), decbin( ord($resultByte ) ), "The byte returned matches the expectation." );
@@ -34,6 +34,30 @@ class NumericBuilderTest extends TestCase {
             ["\xFD", 1, 0, "\xFE"],
             ["\xFF", 0, 0, "\xFF"],
             ["\xFF", 1, 1, "\x00"]
+        ];
+    }
+    
+    /**
+     * 
+     * @param type $byteString
+     * @param type $expectedIsNegative
+     * @dataProvider provideIsNegativeTestCases
+     */
+    public function testIsNegativeFunction( $byteString, $expectedIsNegative ){
+        $builder = new IntBuilder(8);
+        $isNegative = $builder->isNegative($byteString);
+        $this->assertEquals( $expectedIsNegative, $isNegative, "The isNegative value does not match the expected value." );
+    }
+    public function provideIsNegativeTestCases(){
+        return [
+            ["\x88",true],
+            ["\x48",false],
+            ["\xB0\x58",true],
+            ["\x30\x58",false],
+            ["\xB2\x5E\x30\x58",true],
+            ["\x72\x5E\x30\x58",false],
+            ["\xDD\xBB\xEC\xB7\x72\x5E\x30\x58",true],
+            ["\x5D\xBB\xEC\xB7\x72\x5E\x30\x58",false],
         ];
     }
 }

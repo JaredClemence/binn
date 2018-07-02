@@ -25,17 +25,21 @@ abstract class NumericBuilder extends NativeBuilder {
         
     }
     
-    protected function isNegative( $binaryString ){
-        $firstByte = substr( $binaryString, 0, 1 );
-        $negativeFlag = $binaryString & "\x80";
+    /**
+     * Public for testing purposes
+     * @param type $binaryString
+     * @return type
+     */
+    public function isNegative( $binaryString ){
+        $firstBit = $binaryString[0];
+        $negativeFlag = $firstBit & "\x80";
         $isNegative = ord($negativeFlag) == 128;
         return $isNegative;
     }
     
     protected function getTwosComplement( $int ){
-        $length = strlen( $binaryString );
-        $positive = ~$binaryString;
-        $result = $this->addOneToBinaryString( $positive );
+        $flipped = ~$binaryString;
+        $result = $this->addOneToBinaryString( $flipped );
         return $result;
     }
     
@@ -57,6 +61,8 @@ abstract class NumericBuilder extends NativeBuilder {
             $currentByte = $this->addOneToBytePreserveCarry( $currentByte, $carry );
             $binaryString[$i] = $currentByte;
         }
+        unset( $carry ); //discard last carry bit if one exists.
+        return $binaryString;
     }
 
     /**

@@ -14,5 +14,8 @@ use JRC\binn\builders\NumericBuilder;
  * @author jaredclemence
  */
 class IntBuilder extends NumericBuilder {
-    
+    public function make(){
+        $data = $this->getData();
+        
+    }
 }

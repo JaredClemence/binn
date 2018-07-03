@@ -35,6 +35,17 @@ class BinnReader {
         $container->setData($data);
         return $container;
     }
+    
+    /**
+     * This function exists just to improve readability in other methods. It executes 
+     * the read method.
+     * 
+     * @param type $byteString
+     * @return type
+     */
+    public function readNext( $byteString ){
+        return $this->read( $byteString );
+    }
 
     private function identifyTypeString($byteString) {
         $typeString = "";
@@ -106,7 +117,7 @@ class BinnReader {
         $size = $this->getTypeSize( $typeString, $sizeString );
         $fullString = substr( $byteString, 0, $size );
         $prefix = $typeString . $sizeString . $countString;
-        $data = substr( $byteString, strlen( $prefix ) );
+        $data = substr( $fullString, strlen( $prefix ) );
         return $data;
     }
 
@@ -120,6 +131,7 @@ class BinnReader {
             $type->setByteString($typeString);
             $size = $type->getDefaultDataByteLength();
         }
+        return $size;
     }
 
 }

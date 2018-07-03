@@ -7,12 +7,17 @@
  */
 
 namespace JRC\binn\builders;
+use JRC\binn\builders\TextBuilder;
 
 /**
  * Description of DateTimeBuilder
  *
  * @author jaredclemence
  */
-class DateTimeBuilder {
-    //put your code here
+class DateTimeBuilder extends TextBuilder {
+    public function make(){
+        $timeString = parent::make();
+        $dateTime = new \DateTime( $timeString );
+        return $dateTime;
+    }
 }

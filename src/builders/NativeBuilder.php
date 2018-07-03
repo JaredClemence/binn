@@ -16,6 +16,8 @@ namespace JRC\binn\builders;
 abstract class NativeBuilder {
 
     static $registry = "";
+    private $count;
+    private $data;
 
     public static function register( $fullyQualifiedType, $builderInstance ){
         self::initializeRegistry();
@@ -30,11 +32,17 @@ abstract class NativeBuilder {
     protected final function setCount( $count ){
         $this->count = $count;
     }
+    
     protected final function setData( $data ){
         $this->data = $data;
     }
+    
     protected final function getData(){
         return $this->data;
+    }
+    
+    protected final function getCount(){
+        return $this->count;
     }
     
     public function make(){
@@ -73,5 +81,4 @@ abstract class NativeBuilder {
         }
         return $builder;
     }
-
 }

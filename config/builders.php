@@ -5,13 +5,13 @@ use JRC\binn\builders\NullBuilder;
 use JRC\binn\builders\BooleanBuilder;
 use JRC\binn\builders\UnsignedIntBuilder;
 use JRC\binn\builders\IntBuilder;
-use JRC\binn\builders\DecimalBuilder;
 use JRC\binn\builders\DateTimeBuilder;
 use JRC\binn\builders\DoubleBuilder;
 use JRC\binn\builders\FloatBuilder;
-use JRC\binn\builders\TimeBuilder;
-use JRC\binn\builders\ArrayBuilder;
 use JRC\binn\builders\ObjectBuilder;
+use JRC\binn\builders\TextBuilder;
+use JRC\binn\builders\ListBuilder;
+use JRC\binn\builders\MapBuilder;
 
 if (!defined("NativeBuildersRegistered")) {
     define("NativeBuildersRegistered", 1);
@@ -35,7 +35,7 @@ if (!defined("NativeBuildersRegistered")) {
     NativeBuilder::register("\xA3", new DateTimeBuilder());
     NativeBuilder::register("\xA4", new TextBuilder());
     NativeBuilder::register("\xC0", new TextBuilder());
-    NativeBuilder::register("\xE0", new ArrayBuilder());
-    NativeBuilder::register("\xE1", new ArrayBuilder());
+    NativeBuilder::register("\xE0", new ListBuilder());
+    NativeBuilder::register("\xE1", new MapBuilder());
     NativeBuilder::register("\xE2", new ObjectBuilder());
 }

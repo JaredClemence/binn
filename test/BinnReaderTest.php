@@ -149,5 +149,18 @@ class BinnReaderTest extends TestCase {
         $byteString = $container->getByteString();
         return [ $byteString, $container ];
     }
-
+    
+    /**
+     * We were assuming that data has a start but no end. Everything to the end of the binary string was grouped as data.
+     * 
+     * This is shown to be wrong in the list data type, which has a data string that has the following format [binncontainer]{1..*}
+     * The last element of a BINN container is the [data], and there is no designation that separates the [data] from the next container.
+     * 
+     * The BinnReader needs to be able to identify the length of the [type][size][count][data] string, even when it is sandwiched BETWEEN other elements having the same pattern.
+     * @dataProvider providerMixedDataStringReaderTestCases
+     */
+    public function testMixedDataStringReader(){
+        $this->markTestIncomplete();
+    }
+    public function providerMixedDataStringReaderTestCases(){}
 }

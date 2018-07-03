@@ -10,6 +10,8 @@ use PHPUnit\Framework\TestCase;
 
 require_once realpath( __DIR__ . '/../autoload.php' );
 
+use JRC\binn\BinnReader;
+
 /**
  * Description of SpecificationExamplesTest
  *
@@ -25,10 +27,15 @@ class SpecificationExamplesTest extends TestCase {
      * @dataProvider provideTestCases
      */
     public function testReaderUsingSpecificationExamples( $byteString, $expectedStringLength, $expectedResult ){
+        $this->markTestIncomplete();
         //this test cases function runs before the tests begin
         //first we verify that the byte string matches the expected length by the test specification
         $byteStringLength = strlen( $byteString );
         $this->assertEquals( $expectedStringLength, $byteStringLength, "The test case provides a byte string of an incorrect length. Bad test definition." );
+        
+        $binReader = new BinnReader();
+        $phpNativeObjects = $binReader->read( $byteString );
+        $this->assertEquals( $phpNativeObjects, $expectedResult, "The bin reader produces the expected object for the test case." );
     }
     public function provideTestCases() {
         return [

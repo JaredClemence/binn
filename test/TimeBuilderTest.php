@@ -24,8 +24,8 @@ class TimeBuilderTest extends TestCase {
     }
     public function provideReadTestCases(){
         return [
-            ["00:00:00-0800\x00", "08:00:00+0000"],
-            ["23:59:00-0800\x00", "07:59:00+0000"]
+            ["00:00:00-0800\x00", "08:00:00+00:00"],
+            ["23:59:00-0800\x00", "07:59:00+00:00"]
         ];
     }
 }

@@ -42,11 +42,11 @@ class BinnContainer {
     }
     
     public function setCount( $count ){
-        if( is_numeric( $size ) ){
+        if( is_numeric( $count ) ){
             //size will convert values to bytestrings automatically
             $countAtom = new Count();
-            $countAtom->setByteString($size);
-            $size = $countAtom->getByteString();
+            $countAtom->setByteString($count);
+            $count = $countAtom->getByteString();
         }
         $this->count = $count;
     }

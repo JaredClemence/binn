@@ -57,7 +57,7 @@ class BinnNumber extends BinaryStringAtom {
     }
 
     public function setByteString($bytes) {
-        if( is_numeric($bytes) ) $bytes = $this->getBinaryStringFromInt($bytes, $minSize);
+        if( is_numeric($bytes) ) $bytes = $this->getBinaryStringFromInt($bytes);
         $firstByte = substr($bytes, 0, 1);
         $firstBit = $firstByte & "\x80";
         $firstBit = (ord( $firstBit ) >> 7 );

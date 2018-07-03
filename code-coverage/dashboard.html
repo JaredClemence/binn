@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /Users/jaredclemence/binn/src</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href=".css/bootstrap.min.css" rel="stylesheet">
+  <link href=".css/nv.d3.min.css" rel="stylesheet">
+  <link href=".css/style.css" rel="stylesheet">
+  <!--[if lt IE 9]>
+  <script src=".js/html5shiv.min.js"></script>
+  <script src=".js/respond.min.js"></script>
+  <![endif]-->
+ </head>
+ <body>
+  <header>
+   <div class="container">
+    <div class="row">
+     <div class="col-md-12">
+      <ol class="breadcrumb">
+        <li><a href="index.html">/Users/jaredclemence/binn/src</a></li>
+        <li class="active">(Dashboard)</li>
+
+      </ol>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="BinnWriter.php.html#17">BinnWriter</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="NativeFactory.php.html#21">NativeFactory</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="builders/BooleanBuilder.php.html#16">BooleanBuilder</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="builders/NullBuilder.php.html#16">NullBuilder</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="builders/FixedResponseBuilder.php.html#21">FixedResponseBuilder</a></td><td class="text-right">33%</td></tr>
+       <tr><td><a href="builders/NativeBuilder.php.html#16">NativeBuilder</a></td><td class="text-right">62%</td></tr>
+       <tr><td><a href="BinnContainer.php.html#18">BinnContainer</a></td><td class="text-right">75%</td></tr>
+       <tr><td><a href="Type.php.html#16">Type</a></td><td class="text-right">86%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="builders/NativeBuilder.php.html#16">NativeBuilder</a></td><td class="text-right">29</td></tr>
+       <tr><td><a href="Type.php.html#16">Type</a></td><td class="text-right">13</td></tr>
+       <tr><td><a href="BinnContainer.php.html#18">BinnContainer</a></td><td class="text-right">10</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="builders/NumericBuilder.php.html#93"><abbr title="NumericBuilder::calculateBias">calculateBias</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="builders/FixedResponseBuilder.php.html#24"><abbr title="FixedResponseBuilder::setFixedResponse">setFixedResponse</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="builders/NullBuilder.php.html#17"><abbr title="NullBuilder::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="builders/NativeBuilder.php.html#50"><abbr title="NativeBuilder::addToRegistry">addToRegistry</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="builders/NativeBuilder.php.html#44"><abbr title="NativeBuilder::initializeRegistry">initializeRegistry</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="builders/NativeBuilder.php.html#40"><abbr title="NativeBuilder::make">make</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="builders/NativeBuilder.php.html#20"><abbr title="NativeBuilder::register">register</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="builders/BooleanBuilder.php.html#17"><abbr title="BooleanBuilder::__construct">__construct</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="NativeFactory.php.html#30"><abbr title="NativeFactory::parseString">parseString</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="NativeFactory.php.html#36"><abbr title="NativeFactory::selectBuilder">selectBuilder</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="NativeFactory.php.html#23"><abbr title="NativeFactory::read">read</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="BinnWriter.php.html#18"><abbr title="BinnWriter::write">write</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="BinnContainer.php.html#68"><abbr title="BinnContainer::getType">getType</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="BinnContainer.php.html#44"><abbr title="BinnContainer::setCount">setCount</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="builders/NativeBuilder.php.html#59"><abbr title="NativeBuilder::runConfigurationFile">runConfigurationFile</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="BinnContainer.php.html#34"><abbr title="BinnContainer::setSize">setSize</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="Type.php.html#28"><abbr title="Type::getByteString">getByteString</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="Type.php.html#42"><abbr title="Type::setByteString">setByteString</abbr></a></td><td class="text-right">77%</td></tr>
+       <tr><td><a href="builders/DecimalBuilder.php.html#109"><abbr title="DecimalBuilder::makeFrontSideMask">makeFrontSideMask</abbr></a></td><td class="text-right">85%</td></tr>
+       <tr><td><a href="builders/DecimalBuilder.php.html#38"><abbr title="DecimalBuilder::calculateExponentWidth">calculateExponentWidth</abbr></a></td><td class="text-right">85%</td></tr>
+       <tr><td><a href="BinnReader.php.html#39"><abbr title="BinnReader::identifyTypeString">identifyTypeString</abbr></a></td><td class="text-right">88%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="builders/NativeBuilder.php.html#44"><abbr title="NativeBuilder::initializeRegistry">initializeRegistry</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="builders/DecimalBuilder.php.html#109"><abbr title="DecimalBuilder::makeFrontSideMask">makeFrontSideMask</abbr></a></td><td class="text-right">5</td></tr>
+       <tr><td><a href="builders/NativeBuilder.php.html#59"><abbr title="NativeBuilder::runConfigurationFile">runConfigurationFile</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="Type.php.html#42"><abbr title="Type::setByteString">setByteString</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="builders/DecimalBuilder.php.html#38"><abbr title="DecimalBuilder::calculateExponentWidth">calculateExponentWidth</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="BinnContainer.php.html#34"><abbr title="BinnContainer::setSize">setSize</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="BinnContainer.php.html#44"><abbr title="BinnContainer::setCount">setCount</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="Type.php.html#28"><abbr title="Type::getByteString">getByteString</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="BinnReader.php.html#39"><abbr title="BinnReader::identifyTypeString">identifyTypeString</abbr></a></td><td class="text-right">2</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 5.2.2</a> using <a href="https://secure.php.net/" target="_top">PHP 7.2.4</a> with <a href="https://xdebug.org/">Xdebug 2.7.0alpha1</a> and <a href="https://phpunit.de/">PHPUnit 6.3.1</a> at Tue Jul 3 16:53:52 UTC 2018.</small>
+    </p>
+   </footer>
+  </div>
+  <script src=".js/jquery.min.js" type="text/javascript"></script>
+  <script src=".js/bootstrap.min.js" type="text/javascript"></script>
+  <script src=".js/holder.min.js" type="text/javascript"></script>
+  <script src=".js/d3.min.js" type="text/javascript"></script>
+  <script src=".js/nv.d3.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([4,0,0,0,1,0,0,1,1,1,4,14], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([13,0,0,0,0,0,3,1,1,3,3,51], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[97.67441860465115,13,"<a href=\"BinaryStringAtom.php.html#16\">BinaryStringAtom<\/a>"],[75.86206896551724,9,"<a href=\"BinnContainer.php.html#18\">BinnContainer<\/a>"],[100,17,"<a href=\"BinnNumber.php.html#21\">BinnNumber<\/a>"],[95.38461538461539,17,"<a href=\"BinnReader.php.html#24\">BinnReader<\/a>"],[0,1,"<a href=\"BinnWriter.php.html#17\">BinnWriter<\/a>"],[100,0,"<a href=\"Count.php.html#17\">Count<\/a>"],[0,3,"<a href=\"NativeFactory.php.html#21\">NativeFactory<\/a>"],[100,0,"<a href=\"Size.php.html#19\">Size<\/a>"],[100,0,"<a href=\"StorageType.php.html#16\">StorageType<\/a>"],[86.8421052631579,13,"<a href=\"Type.php.html#16\">Type<\/a>"],[100,0,"<a href=\"builders\/ArrayBuilder.php.html#16\">ArrayBuilder<\/a>"],[0,1,"<a href=\"builders\/BooleanBuilder.php.html#16\">BooleanBuilder<\/a>"],[100,0,"<a href=\"builders\/DateBuilder.php.html#16\">DateBuilder<\/a>"],[100,0,"<a href=\"builders\/DateTimeBuilder.php.html#16\">DateTimeBuilder<\/a>"],[95.34883720930233,21,"<a href=\"builders\/DecimalBuilder.php.html#19\">DecimalBuilder<\/a>"],[100,1,"<a href=\"builders\/DoubleBuilder.php.html#16\">DoubleBuilder<\/a>"],[33.33333333333333,2,"<a href=\"builders\/FixedResponseBuilder.php.html#21\">FixedResponseBuilder<\/a>"],[100,1,"<a href=\"builders\/FloatBuilder.php.html#16\">FloatBuilder<\/a>"],[100,2,"<a href=\"builders\/IntBuilder.php.html#16\">IntBuilder<\/a>"],[62.06896551724138,16,"<a href=\"builders\/NativeBuilder.php.html#16\">NativeBuilder<\/a>"],[0,1,"<a href=\"builders\/NullBuilder.php.html#16\">NullBuilder<\/a>"],[94.5945945945946,15,"<a href=\"builders\/NumericBuilder.php.html#17\">NumericBuilder<\/a>"],[100,0,"<a href=\"builders\/ObjectBuilder.php.html#16\">ObjectBuilder<\/a>"],[100,3,"<a href=\"builders\/TextBuilder.php.html#16\">TextBuilder<\/a>"],[100,0,"<a href=\"builders\/TimeBuilder.php.html#16\">TimeBuilder<\/a>"],[100,1,"<a href=\"builders\/UnsignedIntBuilder.php.html#16\">UnsignedIntBuilder<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[100,3,"<a href=\"BinaryStringAtom.php.html#17\">BinaryStringAtom::getBinaryStringFromInt<\/a>"],[92.85714285714286,4,"<a href=\"BinaryStringAtom.php.html#35\">BinaryStringAtom::createHumanReadableBinaryRepresentation<\/a>"],[100,4,"<a href=\"BinaryStringAtom.php.html#55\">BinaryStringAtom::createHumanReadableHexRepresentation<\/a>"],[100,2,"<a href=\"BinaryStringAtom.php.html#75\">BinaryStringAtom::convertValueToBinaryString<\/a>"],[100,1,"<a href=\"BinnContainer.php.html#24\">BinnContainer::__construct<\/a>"],[100,1,"<a href=\"BinnContainer.php.html#31\">BinnContainer::setType<\/a>"],[50,2,"<a href=\"BinnContainer.php.html#34\">BinnContainer::setSize<\/a>"],[50,2,"<a href=\"BinnContainer.php.html#44\">BinnContainer::setCount<\/a>"],[100,1,"<a href=\"BinnContainer.php.html#54\">BinnContainer::setData<\/a>"],[100,1,"<a href=\"BinnContainer.php.html#58\">BinnContainer::getByteString<\/a>"],[0,1,"<a href=\"BinnContainer.php.html#68\">BinnContainer::getType<\/a>"],[100,2,"<a href=\"BinnNumber.php.html#26\">BinnNumber::getByteString<\/a>"],[100,2,"<a href=\"BinnNumber.php.html#33\">BinnNumber::determinePropperFirstBitSetting<\/a>"],[100,2,"<a href=\"BinnNumber.php.html#41\">BinnNumber::constructByteString<\/a>"],[100,7,"<a href=\"BinnNumber.php.html#59\">BinnNumber::setByteString<\/a>"],[100,3,"<a href=\"BinnNumber.php.html#83\">BinnNumber::convertSizeToInt<\/a>"],[100,1,"<a href=\"BinnNumber.php.html#97\">BinnNumber::getValue<\/a>"],[100,1,"<a href=\"BinnReader.php.html#26\">BinnReader::read<\/a>"],[88.88888888888889,2,"<a href=\"BinnReader.php.html#39\">BinnReader::identifyTypeString<\/a>"],[90.9090909090909,4,"<a href=\"BinnReader.php.html#53\">BinnReader::identifySizeString<\/a>"],[100,1,"<a href=\"BinnReader.php.html#70\">BinnReader::determineIfHasSize<\/a>"],[90.9090909090909,4,"<a href=\"BinnReader.php.html#78\">BinnReader::identifyCountString<\/a>"],[100,2,"<a href=\"BinnReader.php.html#95\">BinnReader::determineIfHasCount<\/a>"],[100,1,"<a href=\"BinnReader.php.html#105\">BinnReader::identifyDataString<\/a>"],[100,2,"<a href=\"BinnReader.php.html#113\">BinnReader::getTypeSize<\/a>"],[0,1,"<a href=\"BinnWriter.php.html#18\">BinnWriter::write<\/a>"],[0,1,"<a href=\"NativeFactory.php.html#23\">NativeFactory::read<\/a>"],[0,1,"<a href=\"NativeFactory.php.html#30\">NativeFactory::parseString<\/a>"],[0,1,"<a href=\"NativeFactory.php.html#36\">NativeFactory::selectBuilder<\/a>"],[100,1,"<a href=\"Type.php.html#22\">Type::__construct<\/a>"],[66.66666666666666,2,"<a href=\"Type.php.html#28\">Type::getByteString<\/a>"],[77.77777777777779,3,"<a href=\"Type.php.html#42\">Type::setByteString<\/a>"],[100,6,"<a href=\"Type.php.html#64\">Type::getDefaultDataByteLength<\/a>"],[100,1,"<a href=\"Type.php.html#93\">Type::isType<\/a>"],[0,1,"<a href=\"builders\/BooleanBuilder.php.html#17\">BooleanBuilder::__construct<\/a>"],[100,1,"<a href=\"builders\/DecimalBuilder.php.html#30\">DecimalBuilder::__construct<\/a>"],[85.71428571428571,3,"<a href=\"builders\/DecimalBuilder.php.html#38\">DecimalBuilder::calculateExponentWidth<\/a>"],[100,2,"<a href=\"builders\/DecimalBuilder.php.html#50\">DecimalBuilder::make<\/a>"],[100,1,"<a href=\"builders\/DecimalBuilder.php.html#64\">DecimalBuilder::calculateBias<\/a>"],[100,1,"<a href=\"builders\/DecimalBuilder.php.html#73\">DecimalBuilder::extractMantissa<\/a>"],[100,1,"<a href=\"builders\/DecimalBuilder.php.html#80\">DecimalBuilder::extractBiasedExponent<\/a>"],[100,1,"<a href=\"builders\/DecimalBuilder.php.html#90\">DecimalBuilder::extractSignAndExponentFromData<\/a>"],[85,5,"<a href=\"builders\/DecimalBuilder.php.html#109\">DecimalBuilder::makeFrontSideMask<\/a>"],[100,1,"<a href=\"builders\/DecimalBuilder.php.html#136\">DecimalBuilder::removeSignBit<\/a>"],[100,2,"<a href=\"builders\/DecimalBuilder.php.html#149\">DecimalBuilder::convertBinaryFractionToDecimalFraction<\/a>"],[100,2,"<a href=\"builders\/DecimalBuilder.php.html#168\">DecimalBuilder::readBit<\/a>"],[100,1,"<a href=\"builders\/DecimalBuilder.php.html#185\">DecimalBuilder::findByteNumberForBitPosition<\/a>"],[100,1,"<a href=\"builders\/DoubleBuilder.php.html#17\">DoubleBuilder::__construct<\/a>"],[0,1,"<a href=\"builders\/FixedResponseBuilder.php.html#24\">FixedResponseBuilder::setFixedResponse<\/a>"],[100,1,"<a href=\"builders\/FixedResponseBuilder.php.html#28\">FixedResponseBuilder::make<\/a>"],[100,1,"<a href=\"builders\/FloatBuilder.php.html#17\">FloatBuilder::__construct<\/a>"],[100,2,"<a href=\"builders\/IntBuilder.php.html#17\">IntBuilder::make<\/a>"],[0,1,"<a href=\"builders\/NativeBuilder.php.html#20\">NativeBuilder::register<\/a>"],[100,1,"<a href=\"builders\/NativeBuilder.php.html#25\">NativeBuilder::read<\/a>"],[100,1,"<a href=\"builders\/NativeBuilder.php.html#30\">NativeBuilder::setCount<\/a>"],[100,1,"<a href=\"builders\/NativeBuilder.php.html#33\">NativeBuilder::setData<\/a>"],[100,1,"<a href=\"builders\/NativeBuilder.php.html#36\">NativeBuilder::getData<\/a>"],[0,1,"<a href=\"builders\/NativeBuilder.php.html#40\">NativeBuilder::make<\/a>"],[0,2,"<a href=\"builders\/NativeBuilder.php.html#44\">NativeBuilder::initializeRegistry<\/a>"],[0,1,"<a href=\"builders\/NativeBuilder.php.html#50\">NativeBuilder::addToRegistry<\/a>"],[100,1,"<a href=\"builders\/NativeBuilder.php.html#54\">NativeBuilder::getRegisteredBuilder<\/a>"],[50,3,"<a href=\"builders\/NativeBuilder.php.html#59\">NativeBuilder::runConfigurationFile<\/a>"],[100,3,"<a href=\"builders\/NativeBuilder.php.html#66\">NativeBuilder::getBuilder<\/a>"],[0,1,"<a href=\"builders\/NullBuilder.php.html#17\">NullBuilder::__construct<\/a>"],[100,1,"<a href=\"builders\/NumericBuilder.php.html#20\">NumericBuilder::__construct<\/a>"],[100,1,"<a href=\"builders\/NumericBuilder.php.html#24\">NumericBuilder::getByteLength<\/a>"],[100,1,"<a href=\"builders\/NumericBuilder.php.html#33\">NumericBuilder::isNegative<\/a>"],[100,1,"<a href=\"builders\/NumericBuilder.php.html#40\">NumericBuilder::getTwosComplement<\/a>"],[100,2,"<a href=\"builders\/NumericBuilder.php.html#46\">NumericBuilder::convertBinaryToInteger<\/a>"],[100,2,"<a href=\"builders\/NumericBuilder.php.html#57\">NumericBuilder::addOneToBinaryString<\/a>"],[100,6,"<a href=\"builders\/NumericBuilder.php.html#76\">NumericBuilder::addOneToBytePreserveCarry<\/a>"],[0,1,"<a href=\"builders\/NumericBuilder.php.html#93\">NumericBuilder::calculateBias<\/a>"],[100,1,"<a href=\"builders\/TextBuilder.php.html#17\">TextBuilder::make<\/a>"],[100,2,"<a href=\"builders\/TextBuilder.php.html#23\">TextBuilder::convertDataToString<\/a>"],[100,1,"<a href=\"builders\/UnsignedIntBuilder.php.html#17\">UnsignedIntBuilder::make<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>

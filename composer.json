@@ -1,6 +1,6 @@
 {
     "name": "jaredclemence/binn",
-    "description": "A PHP implementation of the binn file format.",
+    "description": "A PHP implementation of the BINN file format. The BINN format is a standardized format that is useful in sharing data between different systems (possibly coded in different languages). It handles file sizes up to 2GB.",
     "authors": [
         {
             "name": "Jared R Clemence",

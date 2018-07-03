@@ -30,6 +30,7 @@ class IntBuilderTest extends TestCase{
             [1,0,"\x6B",107],
             [2,0,"\xCA\xEB",-13589],
             [2,0,"\x4A\xEB",19179],
+            [2,0,"\xfe\x38",-456],//test taken from specification example
             [4,0,"\xA2\xCF\x8A\xE8",-1563456792],
             [4,0,"\x22\xCF\x8A\xE8",584026856],
             //Unable to maximize use of bit field due to average system limitations. 64-bit unsigned ints are not able to have all bits set. 9E18 is the max.

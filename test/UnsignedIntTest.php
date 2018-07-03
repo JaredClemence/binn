@@ -28,7 +28,9 @@ class UnsignedIntTest extends TestCase {
     public function provideTestCases(){
         return [
             [1,0,"\xEB",235],
+            [1,0,"\x7B",123], //test taken from specification example
             [2,0,"\xCA\xEB",51947],
+            [2,0,"\x03\x15",789], //test taken from specification example
             [4,0,"\xA2\xCF\x8A\xE8",2731510504],
             //Unable to maximize use of bit field due to average system limitations. 64-bit unsigned ints are not able to have all bits set. 9E18 is the max.
             [8,0,"\x7C\xE6\x6C\x50\xE2\x84\x00\x00", 9000000000000000000],

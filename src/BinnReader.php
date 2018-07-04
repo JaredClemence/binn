@@ -118,6 +118,14 @@ class BinnReader {
         $fullString = substr( $byteString, 0, $size );
         $prefix = $typeString . $sizeString . $countString;
         $data = substr( $fullString, strlen( $prefix ) );
+//        var_dump([
+//        BinaryStringAtom::createHumanReadableHexRepresentation($byteString),
+//        BinaryStringAtom::createHumanReadableHexRepresentation($typeString),            
+//        $size,
+//        BinaryStringAtom::createHumanReadableHexRepresentation($fullString),
+//        BinaryStringAtom::createHumanReadableHexRepresentation($data),
+//                ]);
+//        die();
         return $data;
     }
 
@@ -129,7 +137,8 @@ class BinnReader {
         }else{
             $type = new Type();
             $type->setByteString($typeString);
-            $size = $type->getDefaultDataByteLength();
+            $dataSize = $type->getDefaultDataByteLength();
+            $size = 1 /* type */ + 0 /* size */ + 0 /* count */ + $dataSize;
         }
         return $size;
     }

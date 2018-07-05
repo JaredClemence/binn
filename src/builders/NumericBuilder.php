@@ -8,7 +8,6 @@
 
 namespace JRC\binn\builders;
 use JRC\binn\builders\NativeBuilder;
-use JRC\binn\BinaryStringAtom;
 /**
  * Description of NumericBuilder
  *

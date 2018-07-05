@@ -7,7 +7,7 @@
  */
 
 namespace JRC\binn\builders;
-
+use JRC\binn\Count;
 /**
  * Description of NativeBuilder
  *
@@ -19,38 +19,44 @@ abstract class NativeBuilder {
     private $count;
     private $data;
 
-    public static function register( $fullyQualifiedType, $builderInstance ){
+    public static function register($fullyQualifiedType, $builderInstance) {
         self::initializeRegistry();
-        self::addToRegistry( $fullyQualifiedType, $builderInstance );
+        self::addToRegistry($fullyQualifiedType, $builderInstance);
     }
-    
-    public final function read( $count, $data ){
-        $this->setCount( $count );
-        $this->setData( $data );
+
+    public final function read($count, $data) {
+        $this->setCount($count);
+        $this->setData($data);
     }
-    
-    protected final function setCount( $count ){
+
+    protected final function setCount($count) {
+        if (is_string($count)) {
+            $countString = $count;
+            $countObj = new Count();
+            $countObj->setByteString($countString);
+            $count = $countObj->getValue();
+        }
         $this->count = $count;
     }
-    
-    protected final function setData( $data ){
+
+    protected final function setData($data) {
         $this->data = $data;
     }
-    
-    protected final function getData(){
+
+    protected final function getData() {
         return $this->data;
     }
-    
-    protected final function getCount(){
+
+    protected final function getCount() {
         return $this->count;
     }
-    
-    public function make(){
+
+    public function make() {
         
     }
 
     public static function initializeRegistry() {
-        if( is_array( self::$registry ) == false ){
+        if (is_array(self::$registry) == false) {
             self::$registry = [];
         }
     }
@@ -58,27 +64,28 @@ abstract class NativeBuilder {
     public static function addToRegistry($fullyQualifiedType, $builderInstance) {
         self::$registry[$fullyQualifiedType] = $builderInstance;
     }
-    
-    public static function getRegisteredBuilder( $fullyQualifiedType ) {
+
+    public static function getRegisteredBuilder($fullyQualifiedType) {
         self::runConfigurationFile();
-        return self::getBuilder( $fullyQualifiedType );
+        return self::getBuilder($fullyQualifiedType);
     }
 
     private static function runConfigurationFile() {
-        if( !is_array( self::$registry ) || count( self::$registry ) == 0 ){
-            $pathToConfig = realpath( __DIR__ . '/../../config/builders.php' );
+        if (!is_array(self::$registry) || count(self::$registry) == 0) {
+            $pathToConfig = realpath(__DIR__ . '/../../config/builders.php');
             require_once $pathToConfig;
         }
     }
 
-    private static function getBuilder($fullyQualifiedType) : NativeBuilder {
+    private static function getBuilder($fullyQualifiedType): NativeBuilder {
         $builder = null;
-        if( isset( self::$registry[ $fullyQualifiedType ] ) ){
-            $builder = self::$registry[ $fullyQualifiedType ];
-        }else if(isset( self::$registry[ "\x00" ] )){
+        if (isset(self::$registry[$fullyQualifiedType])) {
+            $builder = self::$registry[$fullyQualifiedType];
+        } else if (isset(self::$registry["\x00"])) {
             //if no builder exists for the provided type but NullBuilder is loaded, return the NullBuilder
-            $builder = self::$registry[ "\x00" ];
+            $builder = self::$registry["\x00"];
         }
         return $builder;
     }
+
 }

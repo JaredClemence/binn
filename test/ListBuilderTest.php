@@ -18,7 +18,7 @@ class ListBuilderTest extends TestCase {
      * @dataProvider provideSimpleReadTestCases
      */
     public function testSimpleRead( $dataCount, $binaryString, $expectedResult ){
-        $this->markTestIncomplete();
+        //$this->markTestIncomplete();
         $builder = new Builder();
         $builder->read( $dataCount, $binaryString );
         $result = $builder->make();

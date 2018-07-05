@@ -8,6 +8,11 @@
 
 namespace JRC\binn\builders;
 use JRC\binn\builders\NativeBuilder;
+use JRC\binn\NativeFactory;
+use JRC\binn\BinnReader;
+use JRC\binn\BinaryStringAtom;
+use JRC\binn\Count;
+
 /**
  * Description of ContainerBuilder
  *
@@ -21,10 +26,11 @@ abstract class ContainerBuilder extends NativeBuilder {
         $object = $this->createEmptyContainer();
         for( $i = 0; $i < $count; $i++ ){
             list( $key, $lastPosition ) = $this->extractKey( $data, $lastPosition );
-            list($nextDataString, $lastPosition) = $this->extractNextDataString( $data, $lastPosition );
-            $value = $this->parseNextDataString( $nextDataString );
+            list( $nextDataString, $lastPosition ) = $this->extractNextDataString( $data, $lastPosition );
+            $value = $this->convertContainerStringToNativeElement( $nextDataString );
             $this->addElementAtKey( $object, $key, $value );
         }
+        return $object;
     }
     
     abstract protected function extractKey($data, $lastPosition);
@@ -38,12 +44,22 @@ abstract class ContainerBuilder extends NativeBuilder {
      * It is assumed that the lastPosition points to the first byte of a type definition.
      */
     protected function extractNextDataString($data, $lastPosition){
-        list( $typeString, $nextElement ) = $this->identifyType( $data, $lastPosition );
+        $substring = substr( $data, $lastPosition );
+        $reader = new BinnReader();
+        $container = $reader->readNext($substring);
+        $substring = $container->getByteString();
+        $substringLength = strlen( $substring );
+        $nextIndex = $lastPosition + $substringLength;
+        unset( $reader );
+        unset( $container );
+        unset( $substringLength );
         return [ $substring, $nextIndex ];
     }
 
-    protected function parseNextDataString($nextDataString) {
-        
+    private function convertContainerStringToNativeElement($nextDataString) {
+        $factory = new NativeFactory();
+        $value = $factory->read( $nextDataString );
+        return $value;
     }
 
 }

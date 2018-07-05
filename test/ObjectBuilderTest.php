@@ -10,7 +10,7 @@ require_once realpath( __DIR__ . '/../autoload.php' );
  *
  * @author jaredclemence
  */
-class MapBuilderTest extends TestCase {
+class ObjectBuilderTest extends TestCase {
     /**
      * @param type $dataCount
      * @param type $binaryString

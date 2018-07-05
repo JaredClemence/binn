@@ -69,4 +69,12 @@ class BinnContainer {
         return $this->type;
     }
 
+    public function getData() {
+        return $this->data;
+    }
+
+    public function getCount() {
+        return $this->count;
+    }
+
 }

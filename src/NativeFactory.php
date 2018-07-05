@@ -22,6 +22,8 @@ class NativeFactory {
 
     public function read($byteString) {
         $binnContainer = $this->parseString($byteString);
+        $count = $binnContainer->getCount();
+        $data = $binnContainer->getData();
         $builder = $this->selectBuilder($binnContainer);
         $builder->read($count, $data);
         return $builder->make();

@@ -8,27 +8,24 @@
 
 namespace JRC\binn\builders;
 use JRC\binn\builders\ArrayBuilder;
+use JRC\binn\BinnNumber;
 
 /**
  * @author jaredclemence
  */
 class MapBuilder extends ArrayBuilder {
-    
-    /**
-     * Each mapped element has a key and a value.
-     *     key: big-endian DWORD (4 bytes)
-     *     value: size depends on sub-type
-     * 
-     * @param type $data
-     * @param type $lastPosition
-     * @return array [ substring, indexToNextStartPosition ]
-     */
-    protected function extractNextDataString($data, $lastPosition) {
-        
-    }
-
     protected function extractKey($data, $lastPosition) {
-        
+        $substring = substr( $data, $lastPosition );
+        $keyLength = 4;
+        $keyString = substr( $substring, 0, $keyLength );
+        $nextPosition = $lastPosition + $keyLength;
+        $binnNumber = new BinnNumber();
+        $binnNumber->setByteString($keyString);
+        $key = $binnNumber->getValue();
+        unset( $binnNumber );
+        unset( $keyLength );
+        unset( $keyString );
+        unset( $substring );
+        return [$key, $nextPosition];
     }
-
 }

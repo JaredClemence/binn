@@ -112,5 +112,21 @@ class NativeFactoryTest extends TestCase {
         $result = $this->factory->read($byteStringSource);
         $this->assertEquals($expectedResult, $result);
     }
+    
+    public function provideContainerConversions(){
+        return [
+            "LIST 1" =>["\xE0\x09\x02\xA0\x01a\x00\x20\x7B",["a",123]],
+            "MAP 1" => ["\xE1\x11\x02\x00\x00\x00\x02\xA0\x01a\x00\x00\x00\x00\x05\x20\x7B",[2=>"a",5=>123]],
+            "OBJECT"=> ["\xE2\x28\x03\x0Bjargonizing\x41\xFE\x38\x05jumpy\x40\x03\x15\x0Aschnozzles\x20\x7B", json_decode("{\"jargonizing\":-456,\"jumpy\":789,\"schnozzles\":123}")]
+        ];
+    }
+    
+    /**
+     * @dataProvider provideContainerConversions
+     */
+    public function testContainerConversion($byteStringSource, $expectedResult ){
+        $result = $this->factory->read($byteStringSource);
+        $this->assertEquals($expectedResult, $result);
+    }
 
 }

@@ -10,7 +10,6 @@ namespace JRC\binn\builders;
 use JRC\binn\builders\NativeBuilder;
 use JRC\binn\NativeFactory;
 use JRC\binn\BinnReader;
-use JRC\binn\BinaryStringAtom;
 use JRC\binn\Count;
 
 /**

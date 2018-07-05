@@ -125,11 +125,6 @@ abstract class DecimalBuilder extends NumericBuilder {
                 $valueStore = 0;
             }
         }
-        if( $valueStore == 8 ){
-            $char = chr($maskValue);
-            $maskString .= $char;
-            $maskValue = 0;
-        }
         return $maskString;
     }
 

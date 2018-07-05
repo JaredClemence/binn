@@ -10,13 +10,15 @@ use PHPUnit\Framework\TestCase;
 
 require_once realpath( __DIR__ . '/../autoload.php' );
 
-use JRC\binn\BinnReader;
+use JRC\binn\NativeFactory;
 
 /**
- * Description of SpecificationExamplesTest
+ * This test implements the tests provided in the specification located at the link 
+ * below.
  *
  * @author jaredclemence
- * @link https://github.com/liteserver/binn/blob/master/spec.md Specification that provides tests below
+ * @link https://github.com/liteserver/binn/blob/master/spec.md Specification 
+ * that provides tests below
  */
 class SpecificationExamplesTest extends TestCase {
     /**
@@ -27,15 +29,15 @@ class SpecificationExamplesTest extends TestCase {
      * @dataProvider provideTestCases
      */
     public function testReaderUsingSpecificationExamples( $byteString, $expectedStringLength, $expectedResult ){
-        $this->markTestIncomplete();
         //this test cases function runs before the tests begin
         //first we verify that the byte string matches the expected length by the test specification
         $byteStringLength = strlen( $byteString );
         $this->assertEquals( $expectedStringLength, $byteStringLength, "The test case provides a byte string of an incorrect length. Bad test definition." );
         
-        $binReader = new BinnReader();
-        $phpNativeObjects = $binReader->read( $byteString );
-        $this->assertEquals( $phpNativeObjects, $expectedResult, "The bin reader produces the expected object for the test case." );
+        $factory = new NativeFactory();
+        $phpNativeObjects = $factory->read( $byteString );
+        
+        $this->assertEquals( $expectedResult, $phpNativeObjects, "The bin reader produces the expected object for the test case." );
     }
     public function provideTestCases() {
         return [
@@ -48,13 +50,13 @@ class SpecificationExamplesTest extends TestCase {
 
     private function makeSimpleObjectData() {
         $parts = [
-            hex2bin("e2"), // [type] object ( container )
-            hex2bin("11"), // [size] container total size
-            hex2bin("01"), // [count] key/value pairs
-            hex2bin("05") . "hello", //key (appears to be a string length and a string
-            hex2bin("A0"), // [type] = string
-            hex2bin("05"), // [size]
-            "world" . hex2bin("00")
+            "\xe2", // [type] object ( container )
+            "\x11", // [size] container total size
+            "\x01", // [count] key/value pairs
+            "\x05" . "hello", //key (appears to be a string length and a string
+            "\xA0", // [type] = string
+            "\x05", // [size]
+            "world" . "\x00"
         ];
         $byteString = $this->convertPartsToByteString($parts);
         $expectedSize = 17;
@@ -64,15 +66,15 @@ class SpecificationExamplesTest extends TestCase {
 
     private function makeSimpleArrayData() {
         $parts = [
-            hex2bin("e0"), // [type] list (container)
-            hex2bin("0b"), // [size] container total size
-            hex2bin("03"), // [count] items
-            hex2bin("20"), // [type] = uint8
-            hex2bin("7B"), // [data] = (123)
-            hex2bin("41"), // [type] = int16
-            hex2bin("fe") . hex2bin("38"), // [data] (-456) [uses 2's compliment]
-            hex2bin("40"), // [type] = uint16
-            hex2bin("03") . hex2bin("15") // [data] (789)
+            "\xe0", // [type] list (container)
+            "\x0b", // [size] container total size
+            "\x03", // [count] items
+            "\x20", // [type] = uint8
+            "\x7B", // [data] = (123)
+            "\x41", // [type] = int16
+            "\xfe" . "\x38", // [data] (-456) [uses 2's compliment]
+            "\x40", // [type] = uint16
+            "\x03" . "\x15" // [data] (789)
         ];
         $byteString = $this->convertPartsToByteString($parts);
         $expectedSize = 11;
@@ -82,21 +84,21 @@ class SpecificationExamplesTest extends TestCase {
 
     private function makeListInsideMapData() {
         $parts = [
-            hex2bin("e1"), // [type] map (container)
-            hex2bin("1a"), // [size] container total size
-            hex2bin("02"), // [count] key/value pairs
-            hex2bin("00") . hex2bin("00") . hex2bin("00") . hex2bin("01"), // key  (Note this is a test for a small size stored in a 4 byte string)
-            hex2bin("a0"), // [type] = string
-            hex2bin("03"), // [size]
-            "add" . hex2bin("00"), // [data] (null terminated)
-            hex2bin("00") . hex2bin("00") . hex2bin("00") . hex2bin("02"), // key  (Note this is a test for a small size stored in a 4 byte string)
-            hex2bin("e0"), // [type] list (container)
-            hex2bin("09"), // [size] container total size
-            hex2bin("02"), // [count] items
-            hex2bin("41"), // [type] = int16
-            hex2bin("cf") . hex2bin("c7"), // [data] (-12345)
-            hex2bin("40"), // [type] = uint16
-            hex2bin( "1a" ) . hex2bin("85") // [data] (6789)
+            "\xe1", // [type] map (container)
+            "\x1a", // [size] container total size
+            "\x02", // [count] key/value pairs
+            "\x00" . "\x00" . "\x00" . "\x01", // key  (Note this is a test for a small size stored in a 4 byte string)
+            "\xa0", // [type] = string
+            "\x03", // [size]
+            "add" . "\x00", // [data] (null terminated)
+            "\x00" . "\x00" . "\x00" . "\x02", // key  (Note this is a test for a small size stored in a 4 byte string)
+            "\xe0", // [type] list (container)
+            "\x09", // [size] container total size
+            "\x02", // [count] items
+            "\x41", // [type] = int16
+            "\xcf" . "\xc7", // [data] (-12345)
+            "\x40", // [type] = uint16
+            "\x1a" . "\x85" // [data] (6789)
         ];
         $byteString = $this->convertPartsToByteString($parts);
         $expectedSize = 26;
@@ -106,29 +108,29 @@ class SpecificationExamplesTest extends TestCase {
 
     private function makeListOfObjects() {
         $parts = [
-            hex2bin("e0"), // [type] list (container)
-            hex2bin("2b"), // [size] container total size
-            hex2bin("02"), // [count] items
-            hex2bin("e2"), // [type] object (container)
-            hex2bin("14"), // [size] container total size
-            hex2bin("02"), // [count] key/value pairs
-            hex2bin("02") . "id", // key
-            hex2bin("20"), // [type] uint8
-            hex2bin("01"), // [data] (1)
-            hex2bin("04") . "name", //key
-            hex2bin("a0"), // [type] = string
-            hex2bin("04"), // [size]
-            "John" . hex2bin("00"), // [data] (null terminated)
-            hex2bin("e2"), // [type] = object
-            hex2bin("14"), // [size] container total size
-            hex2bin("02"), // [count] key/value pairs
-            hex2bin("02") . "id", // key
-            hex2bin("20"), // [type] = uint8
-            hex2bin("02"), // [count] key/value pairs
-            hex2bin("04") . "name", // key
-            hex2bin("a0"), // [type] = string
-            hex2bin("04"), // [size]
-            "Eric" . hex2bin("00") // [data] (null terminated)
+            "\xe0", // [type] list (container)
+            "\x2b", // [size] container total size
+            "\x02", // [count] items
+            "\xe2", // [type] object (container)
+            "\x14", // [size] container total size
+            "\x02", // [count] key/value pairs
+            "\x02" . "id", // key
+            "\x20", // [type] uint8
+            "\x01", // [data] (1)
+            "\x04" . "name", //key
+            "\xa0", // [type] = string
+            "\x04", // [size]
+            "John" . "\x00", // [data] (null terminated)
+            "\xe2", // [type] = object
+            "\x14", // [size] container total size
+            "\x02", // [count] key/value pairs
+            "\x02" . "id", // key
+            "\x20", // [type] = uint8
+            "\x02", // [count] key/value pairs
+            "\x04" . "name", // key
+            "\xa0", // [type] = string
+            "\x04", // [size]
+            "Eric" . "\x00" // [data] (null terminated)
         ];
         $byteString = $this->convertPartsToByteString($parts);
         $expectedSize = 43;

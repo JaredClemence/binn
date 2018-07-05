@@ -191,17 +191,17 @@ class BinnReaderTest extends TestCase {
             ],
             "String Series"=>[
                 [
-                    "\xA1\x06ABC\x00",
-                    "\xA2\x08FRANK\x00",
-                    "\xA3\x0AABIGAIL\x00",
-                    "\xA4\x0BWARRANTS\x00",
-                    "\xA1\x08ROGER\x00"
+                    "\xA1\x03ABC\x00",
+                    "\xA2\x05FRANK\x00",
+                    "\xA3\x07ABIGAIL\x00",
+                    "\xA4\x08WARRANTS\x00",
+                    "\xA1\x05ROGER\x00"
                 ]
             ],
             "Blob Series"=>[
                 [
-                    "\xC0\x08FRANK\x00",
-                    "\xC0\x0BWARRANTS\x00"
+                    "\xC0\x05FRANK\x00",
+                    "\xC0\x08WARRANTS\x00"
                 ]
             ],
             "Container"=>[

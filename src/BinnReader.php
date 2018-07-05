@@ -13,6 +13,7 @@ use JRC\binn\NativeFactory;
 use JRC\binn\StorageType;
 use JRC\binn\BinnNumber;
 use JRC\binn\Type;
+
 /**
  * BinnReader separates a binary string into its four components of [type] [size] [count] and [data].
  * 
@@ -22,7 +23,7 @@ use JRC\binn\Type;
  * @author jaredclemence
  */
 class BinnReader {
-    
+
     /**
      * This method breaks a binary string into an array of BinnContainers.
      * 
@@ -33,16 +34,16 @@ class BinnReader {
      * @param string $byteString
      * @return array BinnContainer
      */
-    public function readAll( $byteString ){
+    public function readAll($byteString) {
         $saftey = 0;
         $results = [];
-        do{
-            $container = $this->readNext( $byteString );
+        do {
+            $container = $this->readNext($byteString);
             $containerString = $container->getByteString();
-            $containerStringLength = strlen( $containerString );
-            $byteString = substr( $byteString, $containerStringLength );
+            $containerStringLength = strlen($containerString);
+            $byteString = substr($byteString, $containerStringLength);
             $results[] = $container;
-        }while( $saftey++ < 100000 && strlen( $byteString ) > 0 );
+        } while ($saftey++ < 100000 && strlen($byteString) > 0);
         return $results;
     }
 
@@ -58,7 +59,7 @@ class BinnReader {
         $container->setData($data);
         return $container;
     }
-    
+
     /**
      * This function exists just to improve readability in other methods. It executes 
      * the read method.
@@ -66,19 +67,19 @@ class BinnReader {
      * @param type $byteString
      * @return type
      */
-    public function readNext( $byteString ){
-        return $this->read( $byteString );
+    public function readNext($byteString) {
+        return $this->read($byteString);
     }
 
     private function identifyTypeString($byteString) {
         $typeString = "";
-        $oneByteString = substr( $byteString, 0, 1 );
-        $twoByteString = substr( $byteString, 0, 2 );
+        $oneByteString = substr($byteString, 0, 1);
+        $twoByteString = substr($byteString, 0, 2);
         $twoByteFlag = $oneByteString & "\x10";
         $hasTwoByteFlag = $twoByteFlag > 0;
-        if( $hasTwoByteFlag == true ){
+        if ($hasTwoByteFlag == true) {
             $typeString = $twoByteString;
-        }else{
+        } else {
             $typeString = $oneByteString;
         }
         return $typeString;
@@ -100,8 +101,8 @@ class BinnReader {
         }
         return $size;
     }
-    
-    private function determineIfHasSize( $typeString ){
+
+    private function determineIfHasSize($typeString) {
         $type = new Type();
         $type->setByteString($typeString);
         $size = $type->getDefaultDataByteLength();
@@ -130,40 +131,60 @@ class BinnReader {
         $type = new Type();
         $type->setByteString($typeString);
         $hasSize = false;
-        if( $type->isType( StorageType::CONTAINER ) ){
+        if ($type->isType(StorageType::CONTAINER)) {
             $hasSize = true;
         }
         return $hasSize;
     }
 
     private function identifyDataString($byteString, $typeString, $sizeString, $countString) {
-        $size = $this->getTypeSize( $typeString, $sizeString );
-        $fullString = substr( $byteString, 0, $size );
+        $size = $this->getBinnContainerStringSizeByTypeStringAndSizeString($typeString, $sizeString);
+        $fullString = substr($byteString, 0, $size);
         $prefix = $typeString . $sizeString . $countString;
-        $data = substr( $fullString, strlen( $prefix ) );
-//        var_dump([
-//        BinaryStringAtom::createHumanReadableHexRepresentation($byteString),
-//        BinaryStringAtom::createHumanReadableHexRepresentation($typeString),            
-//        $size,
-//        BinaryStringAtom::createHumanReadableHexRepresentation($fullString),
-//        BinaryStringAtom::createHumanReadableHexRepresentation($data),
-//                ]);
-//        die();
+        $data = substr($fullString, strlen($prefix));
         return $data;
     }
 
-    private function getTypeSize($typeString, $sizeString) {
-        if( $sizeString ){
+    private function getBinnContainerStringSizeByTypeStringAndSizeString($typeString, $sizeString) {
+        if ($sizeString) {
             $sizeNumber = new BinnNumber();
             $sizeNumber->setByteString($sizeString);
-            $size = $sizeNumber->getValue();
-        }else{
+            $containerSize = $sizeNumber->getValue();
+            if ($this->isStringOrBlobContainer($typeString) == true) {
+                //if the size is a string, then it describes ONLY the length of the string WITHOUT the null byte.
+                $sizeOfString = $containerSize;
+                $containerSize = $this->getContainerSizeForStringOrBlob($sizeOfString);
+            }
+        } else {
             $type = new Type();
             $type->setByteString($typeString);
             $dataSize = $type->getDefaultDataByteLength();
-            $size = 1 /* type */ + 0 /* size */ + 0 /* count */ + $dataSize;
+            $containerSize = 1 /* type */ + 0 /* size */ + 0 /* count */ + $dataSize;
         }
-        return $size;
+        return $containerSize;
+    }
+
+    private function isStringOrBlobContainer($typeString) {
+        $type = new Type();
+        $type->setByteString($typeString);
+        $majorType = $type->getContainerType();
+        $isString = ($majorType == StorageType::STRING);
+        $isBlob = ($majorType == StorageType::BLOB);
+        $isStringOrBlob = $isBlob || $isString;
+        return $isStringOrBlob;
+    }
+
+    private function getContainerSizeForStringOrBlob($sizeOfStringWithoutNull) {
+        $nullByteLength = 1;
+        $dataLength = $sizeOfStringWithoutNull + $nullByteLength;
+        
+        $typeLength = 1;
+        $countLength = 0; //strings and blobs have no count
+        $sizeLength = 1;
+        
+        $containerSize = $typeLength + $sizeLength + $countLength + $dataLength;
+        
+        return $containerSize;
     }
 
 }

@@ -95,4 +95,8 @@ class Type extends BinaryStringAtom  {
         return $typeMask == $filtered;
     }
 
+    public function getContainerType() {
+        return $this->storage_type;
+    }
+
 }

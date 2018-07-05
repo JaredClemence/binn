@@ -22,6 +22,29 @@ use JRC\binn\Type;
  * @author jaredclemence
  */
 class BinnReader {
+    
+    /**
+     * This method breaks a binary string into an array of BinnContainers.
+     * 
+     * Each container contains a segment of the string appropriate to the type and size indicated at the container header.
+     * 
+     * This method is useful in constructing list items.
+     * 
+     * @param string $byteString
+     * @return array BinnContainer
+     */
+    public function readAll( $byteString ){
+        $saftey = 0;
+        $results = [];
+        do{
+            $container = $this->readNext( $byteString );
+            $containerString = $container->getByteString();
+            $containerStringLength = strlen( $containerString );
+            $byteString = substr( $byteString, $containerStringLength );
+            $results[] = $container;
+        }while( $saftey++ < 100000 && strlen( $byteString ) > 0 );
+        return $results;
+    }
 
     public function read($byteString) {
         $type = $this->identifyTypeString($byteString);

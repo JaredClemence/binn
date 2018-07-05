@@ -214,5 +214,35 @@ class BinnReaderTest extends TestCase {
             ]
         ];
     }
+    
+    /**
+     * This test verifies that ReadAll breaks a string of multiple byte strings into the corresponding components.
+     * @dataProvider provideReadAllTestCases
+     */
+    public function testReadAll( $arrayOfBinaryContainerStrings ){
+        $byteString = implode( "", $arrayOfBinaryContainerStrings );
+        $reader = new BinnReader();
+        $containers = $reader->readAll($byteString);
+        $this->assertEquals( count( $arrayOfBinaryContainerStrings ), count( $containers ), "The method should return the same number of containers as the number of byte strings used to compose the submitted byte string." );
+        foreach( $containers as $key=>$container ){
+            $correspodingByteString = BinaryStringAtom::createHumanReadableHexRepresentation($arrayOfBinaryContainerStrings[ $key ]);
+            $reconstructedByteString = BinaryStringAtom::createHumanReadableHexRepresentation($container->getByteString());
+            $this->assertEquals( $correspodingByteString, $reconstructedByteString, "The result was expected to be $correspodingByteString at position $key, but $reconstructedByteString is returned." );
+        }
+    }
+    public function provideReadAllTestCases(){
+        return [
+            [
+                [
+                "\x00",
+                "\x01",
+                "\x02",
+                "\x20\xFF",
+                "\x21\xEF",
+                "\x20\x01"
+                ]
+            ]
+        ];
+    }
 
 }

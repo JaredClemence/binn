@@ -30,6 +30,10 @@ class NativeFactory {
 
     public function selectBuilder(BinnContainer $binnContainer) : NativeBuilder {
         $type = $binnContainer->getType();
+        return $this->selectBuilderByRegisterredSubtype($type);
+    }
+    
+    public function selectBuilderByRegisterredSubtype( $type ){
         $builder = NativeBuilder::getRegisteredBuilder($type);
         return $builder;
     }

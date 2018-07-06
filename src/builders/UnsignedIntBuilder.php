@@ -19,4 +19,12 @@ class UnsignedIntBuilder extends NumericBuilder {
         $int = $this->convertBinaryToInteger( $data );
         return $int;
     }
+
+    protected function createBinnDataStringForNativeData($nativeData) {
+        $value = abs( $nativeData );
+        $hex = $this->convertPositiveIntegerToHex( $value );
+        $longHex = $this->expandHexToByteLength( $hex );
+        return $longHex;
+    }
+
 }

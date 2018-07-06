@@ -23,6 +23,10 @@ abstract class NativeBuilder {
         self::initializeRegistry();
         self::addToRegistry($fullyQualifiedType, $builderInstance);
     }
+    
+    public function write( $subtype, $data ){
+        
+    }
 
     public final function read($count, $data) {
         $this->setCount($count);

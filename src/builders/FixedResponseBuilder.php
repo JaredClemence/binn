@@ -28,4 +28,8 @@ abstract class FixedResponseBuilder extends NativeBuilder {
     public function make() {
         return $this->value;
     }
+    
+    public function write( $subtype, $data ){
+        return $subtype;
+    }
 }

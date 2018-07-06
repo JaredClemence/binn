@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use JRC\binn\builders\FloatBuilder;
+use JRC\binn\NativeFactory;
 use JRC\binn\BinaryStringAtom;
 
 require_once realpath( __DIR__ . '/../autoload.php' );
@@ -12,6 +13,25 @@ require_once realpath( __DIR__ . '/../autoload.php' );
  * @author jaredclemence
  */
 class DecimalBuilderTest extends TestCase {
+    /**
+     * 
+     * @param type $subtype
+     * @param type $value
+     * @param type $hexResult
+     * @dataProvider provideWriteTestCases
+     */
+    public function testWrite( $subtype, $value, $hexResult ){
+        $factory = new NativeFactory();
+        $builder = $factory->selectBuilderByRegisterredSubtype($subtype);
+        $result = $builder->write( $subtype, $value );
+        $this->assertEquals( $hexResult, $result );
+    }
+    public function provideWriteTestCases(){
+        return [
+            "DOUBLE (1)"=>["\x82",195023E10,"\x82\x43\x1b\xb6\xe5\x39\x85\x70\x00"],
+            "FLOAT (1)"=>["\x62",195023E10,"\x62\x01\x7f\xb7\x29"],
+        ];
+    }
     /**
      * Floating point and decimal values have a natural error that occurs in conversion between bases.
      * On this test, we assert that the returned value is within a reasonable error of the expected value.

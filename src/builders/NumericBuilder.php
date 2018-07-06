@@ -20,6 +20,15 @@ abstract class NumericBuilder extends NativeBuilder {
         $this->bytes = $bytes;
     }
     
+    public final function write( $subtype, $nativeData ){
+        $data = $this->createBinnDataStringForNativeData( $nativeData );
+        $type = $subtype;
+        $binnContainer = $type . $data;
+        return $binnContainer;
+    }
+    
+    abstract protected function createBinnDataStringForNativeData( $nativeData );
+    
     protected function getByteLength(){
         return $this->bytes;
     }
@@ -51,6 +60,21 @@ abstract class NumericBuilder extends NativeBuilder {
             $value += ord( $char );
         }
         return $value;
+    }
+    
+    protected function convertPositiveIntegerToHex( $integer ){
+        $hexString = "";
+        while( $integer > 0 ){
+            $remainder = $integer % 256;
+            $char = chr( $remainder );
+            $hexString = $char . $hexString;
+            $integer -= $remainder;
+            $integer /= 256;
+        }
+        if( $hexString == "" ){
+            $hexString = "\x00";
+        }
+        return $hexString;
     }
 
     private function addOneToBinaryString($binaryString) {
@@ -92,6 +116,25 @@ abstract class NumericBuilder extends NativeBuilder {
     private function calculateBias( $nBits ){
         $bias = pow(2, ($nBits-1)) - 1;
         return $bias;
+    }
+    
+    protected function expandHexToByteLength($hex) {
+        $longHex = $this->growHexToMaxByteSize( $hex );
+        $correctHex = $this->truncateHex($longHex);
+        return $correctHex;
+    }
+
+    private function truncateHex($longHex) {
+        $byteLength = $this->getByteLength();
+        return substr( $longHex, -1 * $byteLength );
+    }
+
+    private function growHexToMaxByteSize($hex) {
+        $length = $this->getByteLength();
+        while( strlen( $hex ) < $length ){
+            $hex = "\x00" . $hex;
+        }
+        return $hex;
     }
 
 }

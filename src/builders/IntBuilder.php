@@ -25,4 +25,15 @@ class IntBuilder extends NumericBuilder {
         $signedValue = $multiplier * $value;
         return $signedValue;
     }
+
+    protected function createBinnDataStringForNativeData($nativeData) {
+        $value = abs( $nativeData );
+        $hex = $this->convertPositiveIntegerToHex($value);
+        $longHex = $this->expandHexToByteLength($hex);
+        if( $nativeData < 0 ){
+            $longHex = $this->getTwosComplement( $longHex );
+        }
+        return $longHex;
+    }
+
 }

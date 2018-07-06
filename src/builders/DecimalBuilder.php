@@ -47,6 +47,71 @@ abstract class DecimalBuilder extends NumericBuilder {
         return $width;
     }
 
+    protected function createBinnDataStringForNativeData($nativeData) {
+        list( $binaryDecimalString, $exponent) = $this->createBase2ScientificNotation($nativeData);
+        $mantissa = $this->convertReadableBinaryStringToMantissa($binaryDecimalString);
+        $exponentBitString = $this->makeExponentBitString( $exponent );
+        $signByte = $this->getSignFlag($nativeData);
+        $binnContainer = $this->createBinnContainerFromComponents($signByte, $exponentBitString, $mantissa);
+        return $binnContainer;
+    }
+
+    private function createBase2ScientificNotation($nativeData) {
+        $positiveData = abs($nativeData);
+        $base2Decimal = $this->calculateBase2Decimal($positiveData, 2 * $this->mantissaBitLength);
+        return $this->findDigitAndExponent($base2Decimal);
+    }
+
+    private function calculateBase2Decimal($value, $bitLength) {
+        $wholePart = floor($value);
+        $fraction = abs($value - $wholePart);
+        $binaryString = BinaryStringAtom::createHumanReadableBinaryRepresentation($wholePart);
+        while( strpos( $binaryString, " " ) !== false ){
+            $binaryString = str_replace(" ", "", $binaryString);
+        }
+        $i = 1;
+        $binaryString .= ".";
+        while ((strlen($binaryString) - 1) < $bitLength && $fraction != 0) {
+            $i++;
+            $pow = $i;
+            $bitValue = 1 / pow(2, $pow);
+            if ($bitValue > $fraction) {
+                $fraction -= $bitValue;
+                $binaryString .= "1";
+            } else {
+                $binaryString .= "0";
+            } 
+        }
+        return $binaryString;
+    }
+
+    private function findDigitAndExponent($decimal) {
+        $exponent = 0;
+        $parts = \explode(".", $decimal);
+        $wholePart = $parts[0];
+        $fractionPart = $parts[1];
+        if ((int) $wholePart > 0) {
+            //find positive exponent
+            while ((int) $wholePart > 1) {
+                $mostSigDigits = substr($wholePart, 0, strlen($wholePart) - 1);
+                $leastSigDigit = str_replace($mostSigDigits, "", $wholePart);
+                $fractionPart = $leastSigDigit . $fractionPart;
+                $wholePart = $mostSigDigits;
+                $exponent++;
+            }            
+
+        } else {
+            //find negative exponent
+            while ((int) $wholePart == 0) {
+                $wholePart = $fractionPart[0];
+                $fractionPart = substr($fractionPart, 1);
+                $exponent--;
+            }
+        }
+        $digit = "1." . $fractionPart;
+        return [$digit, $exponent];
+    }
+
     public function make() {
         $data = $this->getData();
         $mantissa = $this->extractMantissa($data);
@@ -181,6 +246,77 @@ abstract class DecimalBuilder extends NumericBuilder {
         $float = $bitPosition / 8;
         $bitNumber = (int) floor($float);
         return $bitNumber;
+    }
+
+    private function convertReadableBinaryStringToMantissa($binaryDecimalString) {
+        $parts = explode( ".", $binaryDecimalString );
+        $mantissaString = $this->fitMantissaStringToMantissaBitLength( $parts[1] );
+        $mantissa = "";
+        $byteLength = ceil( $this->mantissaBitLength / 8 );
+        for( $i = 0; $i < $byteLength; $i++ ){
+            $lastByte = substr( $mantissaString, -8 );
+            $mantissaString = substr( $mantissaString, 0, strlen( $mantissaString ) - 8 );
+            while( strlen( $lastByte ) < 8 ){
+                $lastByte = "0" . $lastByte;
+            }
+            $decValue = bindec( $lastByte );
+            $char = chr( $decValue );
+            $mantissa = $char . $mantissa;
+        }
+        return $mantissa;
+    }
+
+    private function fitMantissaStringToMantissaBitLength($mantissaString) {
+        while( strlen( $mantissaString ) < $this->mantissaBitLength ) {
+            $mantissaString .= "0";
+        }
+        $mantissaString = substr( $mantissaString, 0, $this->mantissaBitLength );
+        return $mantissaString;
+    }
+
+    private function makeExponentBitString($exponent) {
+        $bias = $this->calculateBias();
+        $biasedExponent = $exponent + $bias;
+        $exponentBitString = $this->convertBiasedExponentToHex($biasedExponent);
+        $lastBitShift = $this->calculateExponentLastBitShift();
+        return $this->shiftLeftXBits( $exponentBitString, $lastBitShift );
+    }
+
+    private function calculateExponentLastBitShift() {
+        $mantissaBytes = ceil( $this->mantissaBitLength / 8 );
+        $shift = $mantissaBytes * 8 - $this->mantissaBitLength;
+        return $shift;
+    }
+
+    private function shiftLeftXBits($exponentBitString, $lastBitShift) {
+        $value = $this->convertBinaryToInteger($exponentBitString);
+        $value <<= $lastBitShift;
+        $newBitString = $this->convertPositiveIntegerToHex($value);
+        return $newBitString;
+    }
+
+    public function createBinnContainerFromComponents($signByte, $exponentBitString, $mantissa) {
+        $exponentBitString[0] = $exponentBitString[0] | $signByte;
+        $binnContainer = $exponentBitString . $mantissa;
+        if( $this->calculateExponentLastBitShift() > 0 ){
+            $exponentStart = substr( $exponentBitString, 0, strlen( $exponentBitString ) - 1 );
+            $exponentEnd = substr( $exponentBitString, -1 );
+            $mantissa[0] = $mantissa[0] | $exponentEnd;
+            $binnContainer = $exponentStart . $mantissa;
+        }
+        return $binnContainer;
+    }
+
+    private function convertBiasedExponentToHex($biasedExponent) {
+        return $this->convertPositiveIntegerToHex($biasedExponent);
+    }
+
+    private function getSignFlag($nativeData) {
+        if( $nativeData < 0 ){
+            return "\x80";
+        }else{
+            return "\x00";
+        }
     }
 
 }

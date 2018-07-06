@@ -50,21 +50,21 @@ class BinnFactoryTest extends TestCase {
             "NULL"=>[ null, "\x00" ],
             "TRUE"=>[ true, "\x01" ],
             "FALSE"=>[ false, "\x02" ],
-//            "UINT8 (1)"=>[ 0x01, "\x20\x01" ],
-//            "UINT8 (2)"=>[ 0xFF, "\x20\xFF" ],
-//            "INT8 (1)"=>[ -1 * 0x01, "\x21\xFF" ],
-//            "INT8 (2)"=>[ -1 * 0x7F, "\x21\x81" ],
-//            "UINT16"=>[ 0xFFFF, "\x40\xFF\xFF" ],
-//            "INT16"=>[ -1 * 0x7FFF, "\x41\x80\x01"],
-//            "UINT32"=>[ 0xFFFFFFFF, "\x60\xFF\xFF\xFF\xFF" ],
-//            "INT32"=>[ -1 * 0x7FFFFFFF, "\x61\x80\x00\x00\x01" ],
+            "UINT8 (1)"=>[ 0x01, "\x20\x01" ],
+            "UINT8 (2)"=>[ 0xFF, "\x20\xFF" ],
+            "INT8 (1)"=>[ -1 * 0x01, "\x21\xFF" ],
+            "INT8 (2)"=>[ -1 * 0x7F, "\x21\x81" ],
+            "UINT16"=>[ 0xFFFF, "\x40\xFF\xFF" ],
+            "INT16"=>[ -1 * 0x7FFF, "\x41\x80\x01"],
+            "UINT32"=>[ 0xFFFFFFFF, "\x60\xFF\xFF\xFF\xFF" ],
+            "INT32"=>[ -1 * 0x7FFFFFFF, "\x61\x80\x00\x00\x01" ],
             
             //PHP does not differentiate between Float and Double, all Floats will be written as Doubles
             //"FLOAT"=>[-1.8285177648067500000000E-03, "\x62\xBA\xEF\xAA\xE0"],
             //unable to use all 64 bits to represent an integer.
             
-//            "UINT64"=>[ 0x0FFFFFFFFFFFFFFF, "\x80\x0F\xFF\xFF\xFF\xFF\xFF\xFF\xFF" ],
-//            "INT64"=>[ -1 * 0x7FFFFFFFFFFFFFFF, "\x81\x80\x00\x00\x00\x00\x00\x00\x01" ],
+            "UINT64"=>[ 0x0FFFFFFFFFFFFFFF, "\x80\x0F\xFF\xFF\xFF\xFF\xFF\xFF\xFF" ],
+            "INT64"=>[ -1 * 0x7FFFFFFFFFFFFFFF, "\x81\x80\x00\x00\x00\x00\x00\x00\x01" ],
 //            "DOUBLE"=>[-4.432618152350190000000000000000000000000000000E-05,"\x82\xBF\x07\x3D\x5C\x03\xAF\xC0\x07"],
             
             //In PHP Blobs and strings are the same, so we will represent all BLOBS as strings

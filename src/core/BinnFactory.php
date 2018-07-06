@@ -35,7 +35,7 @@ class BinnFactory {
             return "\x00";
         }else if( is_bool( $data ) ){
             return $this->determineBoolSubType( $data );
-        }else if(is_numeric($data) ){
+        }else if(is_numeric($data) && !is_string( $data )){
             return $this->determineNumericSubType( $data );
         }else if(is_string($data) ){
             return $this->determineStringSubType( $data );
@@ -44,6 +44,7 @@ class BinnFactory {
         }else if(is_object( $data ) || is_array($data) ){
             return $this->determineSubTypeOfIndexedContainers($data);
         }
+        //unable to get here.
     }
 
     private function determineBoolSubType($data) {

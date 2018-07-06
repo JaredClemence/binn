@@ -20,4 +20,9 @@ class DateTimeBuilder extends TextBuilder {
         $dateTime = new \DateTime( $timeString );
         return $dateTime;
     }
+    
+    public function write($subtype, $dateTime) {
+        $nativeString = $dateTime->format("Y-m-d H:i:sP");
+        return parent::write($subtype, $nativeString);
+    }
 }

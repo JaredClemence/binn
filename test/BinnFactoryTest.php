@@ -71,8 +71,8 @@ class BinnFactoryTest extends TestCase {
             //In PHP Blobs and strings are the same, so we will represent all BLOBS as strings
             
             "STRING"=>["This is a test.", "\xA0\x0FThis is a test.\x00"],
-//            "DATETIME"=> [ new \DateTime("2000-01-01 15:23:00-08:00"), "\xA1\x192000-01-01 15:23:00-08:00\x00"],
-//            "DECIMALSTRING"=>["1253.1234151234150981237412394012390481751243", "\xA4\x2D1253.1234151234150981237412394012390481751243\x00" ],
+            "DATETIME"=> [ new \DateTime("2000-01-01 15:23:00-08:00"), "\xA1\x192000-01-01 15:23:00-08:00\x00"],
+            "DECIMALSTRING"=>["1253.1234151234150981237412394012390481751243", "\xA4\x2D1253.1234151234150981237412394012390481751243\x00" ],
 //            "LIST (EMPTY)"=> [[], "\xE0\x03\x00"],
 //            "LIST"=>[["a",123], "\xE0\x09\x02\xA0\x01a\x00\x20\x7B"],
 //            "MAP"=>[[2=>"a",5=>123], "\xE1\x11\x02\x00\x00\x00\x02\xA0\x01a\x00\x00\x00\x00\x05\x20\x7B"],

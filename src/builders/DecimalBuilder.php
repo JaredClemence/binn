@@ -83,13 +83,14 @@ abstract class DecimalBuilder extends NumericBuilder {
         if ((int) $wholePart > 0) {
             //find positive exponent
             while ((int) $wholePart > 1) {
+                $wholePartLength = strlen( $wholePart );
+                $mostSigDigitsLength = $wholePartLength - 1;
                 $mostSigDigits = substr($wholePart, 0, strlen($wholePart) - 1);
-                $leastSigDigit = str_replace($mostSigDigits, "", $wholePart);
+                $leastSigDigit = substr($wholePart, -1);
                 $fractionPart = $leastSigDigit . $fractionPart;
                 $wholePart = $mostSigDigits;
                 $exponent++;
-            }            
-
+            }
         } else {
             //find negative exponent
             while ((int) $wholePart == 0) {

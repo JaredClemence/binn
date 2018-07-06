@@ -1,9 +1,9 @@
 <?php
 
-namespace JRC\binn;
-use JRC\binn\Type;
-use JRC\binn\Size;
-use JRC\binn\Count;
+namespace JRC\binn\core;
+use JRC\binn\core\Type;
+use JRC\binn\core\Size;
+use JRC\binn\core\Count;
 /**
  * Description of BinnContainer
  *

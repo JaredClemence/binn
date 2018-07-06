@@ -1,9 +1,9 @@
 <?php
 
-namespace JRC\binn;
+namespace JRC\binn\core;
 
-use JRC\binn\BinnContainer;
-use JRC\binn\BinnReader;
+use JRC\binn\core\BinnContainer;
+use JRC\binn\core\BinnReader;
 use JRC\binn\builders\NativeBuilder;
 
 /**

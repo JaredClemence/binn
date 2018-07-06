@@ -4,10 +4,10 @@ use PHPUnit\Framework\TestCase;
 
 require_once realpath(__DIR__ . '/../autoload.php');
 
-use JRC\binn\BinnReader;
-use JRC\binn\StorageType;
-use JRC\binn\BinnContainer;
-use JRC\binn\BinaryStringAtom;
+use JRC\binn\core\BinnReader;
+use JRC\binn\core\StorageType;
+use JRC\binn\core\BinnContainer;
+use JRC\binn\core\BinaryStringAtom;
 
 /**
  * Description of BinnReaderTest

@@ -6,8 +6,8 @@
  * and open the template in the editor.
  */
 
-namespace JRC\binn;
-use JRC\binn\NativeFactory;
+namespace JRC\binn\core;
+use JRC\binn\core\NativeFactory;
 /**
  * Description of BinnFactory
  *

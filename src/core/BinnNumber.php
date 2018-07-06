@@ -1,8 +1,8 @@
 <?php
 
-namespace JRC\binn;
+namespace JRC\binn\core;
 
-use JRC\binn\BinaryStringAtom;
+use JRC\binn\core\BinaryStringAtom;
 /**
  * A bin number is one or four bytes. The smallest byte size should be used. To indicate 
  * whether four bytes are expected, the first bit is used as a flag.

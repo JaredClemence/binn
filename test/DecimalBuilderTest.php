@@ -2,8 +2,8 @@
 
 use PHPUnit\Framework\TestCase;
 use JRC\binn\builders\FloatBuilder;
-use JRC\binn\NativeFactory;
-use JRC\binn\BinaryStringAtom;
+use JRC\binn\core\NativeFactory;
+use JRC\binn\core\BinaryStringAtom;
 
 require_once realpath( __DIR__ . '/../autoload.php' );
 

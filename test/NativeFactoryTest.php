@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use JRC\binn\NativeFactory;
+use JRC\binn\core\NativeFactory;
 
 require_once realpath(__DIR__ . '/../autoload.php');
 

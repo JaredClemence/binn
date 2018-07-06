@@ -1,11 +1,11 @@
 <?php
 
-namespace JRC\binn;
+namespace JRC\binn\core;
 
-use JRC\binn\BinnContainer;
-use JRC\binn\StorageType;
-use JRC\binn\BinnNumber;
-use JRC\binn\Type;
+use JRC\binn\core\BinnContainer;
+use JRC\binn\core\StorageType;
+use JRC\binn\core\BinnNumber;
+use JRC\binn\core\Type;
 
 /**
  * BinnReader separates a binary string into its four components of [type] [size] [count] and [data].

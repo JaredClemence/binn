@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use JRC\binn\BinnNumber;
+use JRC\binn\core\BinnNumber;
 
 require_once realpath( __DIR__ . '/../autoload.php' );
 /**

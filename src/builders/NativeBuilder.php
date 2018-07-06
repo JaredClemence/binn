@@ -7,7 +7,7 @@
  */
 
 namespace JRC\binn\builders;
-use JRC\binn\Count;
+use JRC\binn\core\Count;
 /**
  * Description of NativeBuilder
  *

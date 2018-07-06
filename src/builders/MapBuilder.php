@@ -8,7 +8,7 @@
 
 namespace JRC\binn\builders;
 use JRC\binn\builders\ArrayBuilder;
-use JRC\binn\BinnNumber;
+use JRC\binn\core\BinnNumber;
 
 /**
  * @author jaredclemence

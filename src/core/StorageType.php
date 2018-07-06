@@ -1,6 +1,6 @@
 <?php
 
-namespace JRC\binn;
+namespace JRC\binn\core;
 
 /**
  * Description of StorageType

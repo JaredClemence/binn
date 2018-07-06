@@ -6,8 +6,8 @@
  * and open the template in the editor.
  */
 
-namespace JRC\binn;
-use JRC\binn\BinnNumber;
+namespace JRC\binn\core;
+use JRC\binn\core\BinnNumber;
 /**
  * Size and Count have the same Binary Settings. This class exists only to make the code more readable
  * by the specs.

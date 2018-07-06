@@ -9,7 +9,7 @@
 namespace JRC\binn\builders;
 
 use JRC\binn\builders\NumericBuilder;
-use JRC\binn\BinaryStringAtom;
+use JRC\binn\core\BinaryStringAtom;
 
 /**
  * Description of DecimalBuilder

@@ -9,7 +9,7 @@
 namespace JRC\binn\builders;
 
 use JRC\binn\builders\ContainerBuilder;
-use JRC\binn\Size;
+use JRC\binn\core\Size;
 
 /**
  * Description of ObjectBuilder

@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use JRC\binn\BinnContainer;
-use JRC\binn\StorageType;
+use JRC\binn\core\BinnContainer;
+use JRC\binn\core\StorageType;
 
 require_once realpath( __DIR__ . '/../autoload.php' );
 /**

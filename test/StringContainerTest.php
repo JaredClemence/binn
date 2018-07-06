@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use JRC\binn\builders\TextBuilder;
-use JRC\binn\BinaryStringAtom;
+use JRC\binn\core\BinaryStringAtom;
 
 require_once realpath( __DIR__ . '/../autoload.php' );
 

@@ -1,7 +1,7 @@
 <?php
 
-namespace JRC\binn;
-use JRC\binn\BinaryStringAtom;
+namespace JRC\binn\core;
+use JRC\binn\core\BinaryStringAtom;
 /**
  * Description of Type
  *

@@ -8,9 +8,9 @@
 
 namespace JRC\binn\builders;
 use JRC\binn\builders\NativeBuilder;
-use JRC\binn\NativeFactory;
-use JRC\binn\BinnReader;
-use JRC\binn\Count;
+use JRC\binn\core\NativeFactory;
+use JRC\binn\core\BinnReader;
+use JRC\binn\core\Count;
 
 /**
  * Description of ContainerBuilder

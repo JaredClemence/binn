@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 
 require_once realpath( __DIR__ . '/../autoload.php' );
 
-use JRC\binn\NativeFactory;
+use JRC\binn\core\NativeFactory;
 
 /**
  * This test implements the tests provided in the specification located at the link 

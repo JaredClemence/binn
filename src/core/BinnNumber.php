@@ -23,6 +23,10 @@ class BinnNumber extends BinaryStringAtom {
         $this->determinePropperFirstBitSetting();
         return $this->constructByteString();
     }
+    
+    public function setValue( $sizeValue ){
+        $this->size = $sizeValue;
+    }
 
     private function determinePropperFirstBitSetting() {
         if( $this->size <= 127 ){

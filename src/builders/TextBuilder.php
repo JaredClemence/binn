@@ -8,6 +8,7 @@
 
 namespace JRC\binn\builders;
 use JRC\binn\builders\NativeBuilder;
+use JRC\binn\core\Size;
 /**
  * Description of TextBuilder
  *
@@ -28,6 +29,21 @@ class TextBuilder extends NativeBuilder {
             $string = substr( $data, 0, $lastCharIndex );
         }
         return $string;
+    }
+    
+    public function write($subtype, $nativeString) {
+        $sizeBytes = $this->determineSizeBytes( $nativeString );
+        $nullByte = "\x00";
+        $binnContainer = $subtype . $sizeBytes . $nativeString . $nullByte;
+        return $binnContainer;
+    }
+
+    private function determineSizeBytes($nativeString) {
+        $sizeValue = strlen( $nativeString );
+        $size = new Size();
+        $size->setValue( $sizeValue );
+        $sizeBytes = $size->getByteString();
+        return $sizeBytes;
     }
 
 }

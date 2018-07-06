@@ -24,12 +24,16 @@ class DecimalBuilderTest extends TestCase {
         $factory = new NativeFactory();
         $builder = $factory->selectBuilderByRegisterredSubtype($subtype);
         $result = $builder->write( $subtype, $value );
+        $result = BinaryStringAtom::createHumanReadableHexRepresentation($result);
+        $hexResult = BinaryStringAtom::createHumanReadableHexRepresentation($hexResult);
         $this->assertEquals( $hexResult, $result );
     }
     public function provideWriteTestCases(){
         return [
-            "DOUBLE (1)"=>["\x82",195023E10,"\x82\x43\x1b\xb6\xe5\x39\x85\x70\x00"],
-            "FLOAT (1)"=>["\x62",195023E10,"\x62\x01\x7f\xb7\x29"],
+//            "DOUBLE (1)"=>["\x82",195023E10,"\x82\x43\x1b\xb6\xe5\x39\x85\x70\x00"],
+        //    "DOUBLE (2)"=>["\x82",-4.432618152350190000000000000000000000000000000E-05,"\xBF\x07\x3D\x5C\x03\xAF\xC0\x07"],
+            "FLOAT (1)"=>["\x62",1950230027173888,"\x62\x58\xdd\xb7\x2a"],
+//            "FLOAT (2)"=>["\x62",-4.432618152350190000000000000000000000000000000E-05, "\x62\xB8\x39\xEA\xE0"],
         ];
     }
     /**

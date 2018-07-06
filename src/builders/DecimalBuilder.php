@@ -10,6 +10,7 @@ namespace JRC\binn\builders;
 
 use JRC\binn\builders\NumericBuilder;
 use JRC\binn\core\BinaryStringAtom;
+use JRC\binn\builders\binary\BinaryDecimalBuilder;
 
 /**
  * Description of DecimalBuilder
@@ -63,25 +64,14 @@ abstract class DecimalBuilder extends NumericBuilder {
     }
 
     private function calculateBase2Decimal($value, $bitLength) {
-        $wholePart = floor($value);
-        $fraction = abs($value - $wholePart);
-        $binaryString = BinaryStringAtom::createHumanReadableBinaryRepresentation($wholePart);
-        while( strpos( $binaryString, " " ) !== false ){
-            $binaryString = str_replace(" ", "", $binaryString);
-        }
-        $i = 1;
-        $binaryString .= ".";
-        while ((strlen($binaryString) - 1) < $bitLength && $fraction != 0) {
-            $i++;
-            $pow = $i;
-            $bitValue = 1 / pow(2, $pow);
-            if ($bitValue > $fraction) {
-                $fraction -= $bitValue;
-                $binaryString .= "1";
-            } else {
-                $binaryString .= "0";
-            } 
-        }
+        $posVal = abs( $value );
+        $wholePart = floor($posVal);
+        $fraction = $posVal - $wholePart;
+        $builder = new BinaryDecimalBuilder($bitLength);
+        $builder->setWholePart($wholePart);
+        $builder->addFractionPart($fraction);
+        $binaryString = $builder->getBinaryString();
+        unset( $builder );
         return $binaryString;
     }
 
@@ -284,7 +274,8 @@ abstract class DecimalBuilder extends NumericBuilder {
 
     private function calculateExponentLastBitShift() {
         $mantissaBytes = ceil( $this->mantissaBitLength / 8 );
-        $shift = $mantissaBytes * 8 - $this->mantissaBitLength;
+        $shift = $this->mantissaBitLength - $mantissaBytes * 8;
+        if( $shift < 0 ) $shift += 8;
         return $shift;
     }
 

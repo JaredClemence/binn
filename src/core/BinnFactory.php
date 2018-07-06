@@ -59,8 +59,8 @@ class BinnFactory {
 
     private function determineDecimalSubType($data) {
         //no differentiation in PHP between float and double
-        //return double
-        return "\x82";
+        //return float
+        return "\x62";
     }
 
     private function determineIntegerSubType($data) {

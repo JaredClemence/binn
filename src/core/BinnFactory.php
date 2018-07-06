@@ -27,7 +27,24 @@ class BinnFactory {
 
     private function selectBuilderBySubtype($subtype) {
         $factory = new NativeFactory();
-        return $factory->selectBuilderBySubtype($subtype);
+        return $factory->selectBuilderByRegisterredSubtype($subtype);
+    }
+
+    private function determineContainerSubType($data) {
+        if( is_null( $data ) ){
+            return "\x00";
+        }else if( is_bool( $data ) ){
+            return $this->determineBoolSubType( $data );
+        }
+    }
+
+    private function determineBoolSubType($data) {
+        if( $data ){
+            return "\x01";
+        }
+        else {
+            return "\x02";
+        }
     }
 
 }

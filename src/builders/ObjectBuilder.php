@@ -43,6 +43,25 @@ class ObjectBuilder extends ContainerBuilder {
         $nextPosition = $lastPosition + 1 /* key length */ + $keySize /* key text length */;
         return [ $keyText, $nextPosition ];
     }
+    
+    protected function convertKeyToKeyByteString( $key ){
+        $stringKey = (string) $key;
+        $length = strlen( $stringKey );
+        $keySizeByte = chr( $length );
+        $keyByteString = $keySizeByte . $stringKey; // no null byte on keys
+        return $keyByteString;
+    }
+    
+    protected function getDataFromObject( $mixed, $key ){
+        return $mixed->{$key};
+    }
+    
+    protected function getOrderedKeyArray( $mixed ){
+        $values = get_object_vars($mixed);
+        $keys = array_keys( $values );
+        sort( $keys );
+        return $keys;
+    }
 
     private function convertKeySizeStringToValue($keySizeString) {
         $keySizeObj = new Size();
@@ -50,5 +69,4 @@ class ObjectBuilder extends ContainerBuilder {
         $keySize = $keySizeObj->getValue();
         return $keySize;
     }
-
 }

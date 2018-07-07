@@ -28,4 +28,13 @@ class MapBuilder extends ArrayBuilder {
         unset( $substring );
         return [$key, $nextPosition];
     }
+
+    protected function convertKeyToKeyByteString($key) {
+        $byteString = chr( $key );
+        while( strlen( $byteString ) < 4 ){
+            $byteString = "\x00" . $byteString;
+        }
+        return $byteString;
+    }
+
 }

@@ -16,12 +16,24 @@ class BinnNumber extends BinaryStringAtom {
 
     public $firstBit;
     public $size;
+    
+    
+    private $minByteLength;
+
+    public function __construct( $byteLength = 0 ) {
+        $this->minByteLength = $byteLength;
+    }
 
     public function getByteString() {
-        if( $this->size == 0 ) return "";
-        
-        $this->determinePropperFirstBitSetting();
-        return $this->constructByteString();
+        $value = "";
+        if( $this->size != 0 ){
+            $this->determinePropperFirstBitSetting();
+            $value = $this->constructByteString();
+        }
+        while( strlen( $value ) < $this->minByteLength ){
+            $value = "\x00" . $value;
+        }
+        return $value;
     }
     
     public function setValue( $sizeValue ){

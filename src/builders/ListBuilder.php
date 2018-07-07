@@ -44,4 +44,9 @@ class ListBuilder extends ArrayBuilder {
         return $this->curKey;
     }
 
+    protected function convertKeyToKeyByteString($key) {
+        //list uses no keys
+        return "";
+    }
+
 }

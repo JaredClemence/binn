@@ -65,7 +65,7 @@ class BinnFactoryTest extends TestCase {
             
             "UINT64"=>[ 0x0FFFFFFFFFFFFFFF, "\x80\x0F\xFF\xFF\xFF\xFF\xFF\xFF\xFF" ],
             "INT64"=>[ -1 * 0x7FFFFFFFFFFFFFFF, "\x81\x80\x00\x00\x00\x00\x00\x00\x01" ],
-//            //PHP does not have double precision fractional values are only accurate to 4 bytes.
+            //PHP does not have double precision fractional values are only accurate to 4 bytes.
             //"DOUBLE"=>[-4.432618152350190000000000000000000000000000000E-05,"\x82\xBF\x07\x3D\x5C\x03\xAF\xC0\x07"],
             
             //In PHP Blobs and strings are the same, so we will represent all BLOBS as strings
@@ -73,10 +73,10 @@ class BinnFactoryTest extends TestCase {
             "STRING"=>["This is a test.", "\xA0\x0FThis is a test.\x00"],
             "DATETIME"=> [ new \DateTime("2000-01-01 15:23:00-08:00"), "\xA1\x192000-01-01 15:23:00-08:00\x00"],
             "DECIMALSTRING"=>["1253.1234151234150981237412394012390481751243", "\xA4\x2D1253.1234151234150981237412394012390481751243\x00" ],
-//            "LIST (EMPTY)"=> [[], "\xE0\x03\x00"],
-//            "LIST"=>[["a",123], "\xE0\x09\x02\xA0\x01a\x00\x20\x7B"],
-//            "MAP"=>[[2=>"a",5=>123], "\xE1\x11\x02\x00\x00\x00\x02\xA0\x01a\x00\x00\x00\x00\x05\x20\x7B"],
-//            "OBJECT"=>[json_decode("{\"jargonizing\":-456,\"jumpy\":789,\"schnozzles\":123}"),"\xE2\x28\x03\x0Bjargonizing\x41\xFE\x38\x05jumpy\x40\x03\x15\x0Aschnozzles\x20\x7B"],
+            "LIST (EMPTY)"=> [[], "\xE0\x03\x00"],
+            "LIST"=>[["a",123], "\xE0\x09\x02\xA0\x01a\x00\x20\x7B"],
+            "MAP"=>[[2=>"a",5=>123], "\xE1\x11\x02\x00\x00\x00\x02\xA0\x01a\x00\x00\x00\x00\x05\x20\x7B"],
+            "OBJECT"=>[json_decode("{\"jargonizing\":-456,\"jumpy\":789,\"schnozzles\":123}"),"\xE2\x28\x03\x0Bjargonizing\x41\xFE\x38\x05jumpy\x40\x03\x15\x0Aschnozzles\x20\x7B"],
         ];
     }
 }

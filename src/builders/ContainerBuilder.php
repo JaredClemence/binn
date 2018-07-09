@@ -42,6 +42,26 @@ abstract class ContainerBuilder extends NativeBuilder {
         return $binnContainer;
     }
     
+    protected function getDataFromObject( $mixed, $key ){
+        $value = null;
+        if( is_array( $mixed ) ){
+            $value = $mixed[$key];
+        }else{
+            $value = $mixed->{$key};
+        }
+        return $value;
+    }
+    
+    protected function getOrderedKeyArray( $mixed ){
+        $values = $mixed;
+        if( is_object( $values ) ){
+            $values = get_object_vars($values);
+        }
+        $keys = array_keys( $values );
+        sort( $keys );
+        return $keys;
+    }
+    
     abstract protected function extractKey($data, $lastPosition);
 
     abstract protected function addElementAtKey( &$object, $key, $value);
@@ -113,8 +133,6 @@ abstract class ContainerBuilder extends NativeBuilder {
     }
     
     abstract protected function convertKeyToKeyByteString( $key );
-    abstract protected function getDataFromObject( $mixed, $key );
-    abstract protected function getOrderedKeyArray( $mixed );
 
 
     private function createBinnDataStringForContainerType( $nativeData ){

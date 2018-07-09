@@ -51,17 +51,6 @@ class ObjectBuilder extends ContainerBuilder {
         $keyByteString = $keySizeByte . $stringKey; // no null byte on keys
         return $keyByteString;
     }
-    
-    protected function getDataFromObject( $mixed, $key ){
-        return $mixed->{$key};
-    }
-    
-    protected function getOrderedKeyArray( $mixed ){
-        $values = get_object_vars($mixed);
-        $keys = array_keys( $values );
-        sort( $keys );
-        return $keys;
-    }
 
     private function convertKeySizeStringToValue($keySizeString) {
         $keySizeObj = new Size();

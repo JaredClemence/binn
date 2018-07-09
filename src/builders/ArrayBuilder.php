@@ -15,14 +15,4 @@ abstract class ArrayBuilder extends ContainerBuilder {
     protected function createEmptyContainer(){
         return [];
     }
-    
-    protected function getDataFromObject( $mixed, $key ){
-        return $mixed[ $key ];
-    }
-    
-    protected function getOrderedKeyArray( $mixed ){
-        $keys = array_keys( $mixed );
-        sort( $keys );
-        return $keys;
-    }
 }

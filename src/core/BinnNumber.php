@@ -3,6 +3,7 @@
 namespace JRC\binn\core;
 
 use JRC\binn\core\BinaryStringAtom;
+
 /**
  * A bin number is one or four bytes. The smallest byte size should be used. To indicate 
  * whether four bytes are expected, the first bit is used as a flag.
@@ -16,34 +17,32 @@ class BinnNumber extends BinaryStringAtom {
 
     public $firstBit;
     public $size;
-    
-    
     private $minByteLength;
 
-    public function __construct( $byteLength = 0 ) {
+    public function __construct($byteLength = 0) {
         $this->minByteLength = $byteLength;
     }
 
     public function getByteString() {
         $value = "";
-        if( $this->size != 0 ){
+        if ($this->size != 0) {
             $this->determinePropperFirstBitSetting();
             $value = $this->constructByteString();
         }
-        while( strlen( $value ) < $this->minByteLength ){
+        while (strlen($value) < $this->minByteLength) {
             $value = "\x00" . $value;
         }
         return $value;
     }
-    
-    public function setValue( $sizeValue ){
+
+    public function setValue($sizeValue) {
         $this->size = $sizeValue;
     }
 
     private function determinePropperFirstBitSetting() {
-        if( $this->size <= 127 ){
+        if ($this->size <= 127) {
             $this->firstBit = 0;
-        }else{
+        } else {
             $this->firstBit = 1;
         }
     }
@@ -67,36 +66,52 @@ class BinnNumber extends BinaryStringAtom {
     }
 
     public function setByteString($bytes) {
-        if( is_numeric($bytes) && !is_string( $bytes ) ) $bytes = $this->getBinaryStringFromInt($bytes);
+        if ($bytes === "") {
+            $this->setMinByteLength( 0 );
+            $this->size = 0;
+        } else {
+            $this->setMinByteLength( 1 );
+            $this->setNonEmptyByteString($bytes);
+        }
+    }
+    
+    private function setMinByteLength( $length ){
+        $this->minByteLength = $length;
+    }
+
+    private function setNonEmptyByteString($bytes) {
+        if (is_numeric($bytes) && !is_string($bytes))
+            $bytes = $this->getBinaryStringFromInt($bytes);
         $firstByte = substr($bytes, 0, 1);
         $firstBit = $firstByte & "\x80";
-        $firstBit = (ord( $firstBit ) >> 7 );
+        $firstBit = (ord($firstBit) >> 7 );
         $this->firstBit = $firstBit;
         $force4Byte = false;
         if ($firstBit == 0) {
             //use short size
-            $this->size = ord( "\x7F" & $firstByte );
-            if( $this->size == 0 ) $force4Byte = true;
+            $this->size = ord("\x7F" & $firstByte);
+            if ($this->size == 0)
+                $force4Byte = true;
         }
-        
-        if( $firstBit != 0 || $force4Byte == true )
-        {
+
+        if ($firstBit != 0 || $force4Byte == true) {
             //use long size
             $fourBytes = substr($bytes, 0, 4);
             $this->size = "\x7F\xFF\xFF\xFF" & $fourBytes;
         }
-        
-        if( $this->size == "" ) $this->size = 0;
+
+        if ($this->size == "")
+            $this->size = 0;
         $this->convertSizeToInt();
     }
-    
-    private function convertSizeToInt(){
-        if( is_string( $this->size ) ){
+
+    private function convertSizeToInt() {
+        if (is_string($this->size)) {
             $chars = $this->size;
             $int = 0;
-            for( $i = 0; $i < strlen( $chars ); $i++ ){
+            for ($i = 0; $i < strlen($chars); $i++) {
                 $char = $chars[$i];
-                $ord = ord( $char );
+                $ord = ord($char);
                 $int <<= 8;
                 $int += $ord;
             }

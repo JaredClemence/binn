@@ -215,6 +215,24 @@ class BinnReaderTest extends TestCase {
         ];
     }
     
+    public function testEmptyListReads(){
+        $listOfEmptyLists = "\xe0\x09\x02\xe0\x03\x00\xe0\x03\x00";
+        $extraBytes = "\xa9\xe0\x1f";
+        $emptyLists = "\xe0\x03\x00";
+        $reader = new BinnReader();
+        $container = $reader->read($emptyLists . $extraBytes);
+        /* @var $contianer BinnContainer */
+        $this->assertEquals( "\x00", $container->count, "The count should be 0x00" );
+        $this->assertEquals( "", $container->data, "The data should be empty." );
+        
+        
+        $container = $reader->read($listOfEmptyLists . $extraBytes);
+        /* @var $contianer BinnContainer */
+        $this->assertEquals( "\x09", $container->size, "The size should be 0x09" );
+        $this->assertEquals( "\x02", $container->count, "The count should be 0x02" );
+        $this->assertEquals( "\xe0\x03\x00\xe0\x03\x00", $container->data, "The data should be 0xe00300e00300." );
+    }
+    
     /**
      * This test verifies that ReadAll breaks a string of multiple byte strings into the corresponding components.
      * @dataProvider provideReadAllTestCases

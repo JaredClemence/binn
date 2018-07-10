@@ -78,5 +78,17 @@ class BinnSpecificationTest extends TestCase {
             $this->assertEquals( $value, $genericObj->{$attribute}, "The generic object should have the same value for the attribute `$attribute`." );
         }
     }
+    
+    public function testEmptyListReads(){
+        $listOfEmptyLists = "\xe0\x09\x02\xe0\x03\x00\xe0\x03\x00";
+        $binnSpec = new BinnSpecification();
+        $data = $binnSpec->read($listOfEmptyLists);
+        $this->assertTrue( is_array( $data ), "The data is an array." );
+        $this->assertEquals( 2, count( $data ), "The data has two elements." );
+        $this->assertTrue( is_array( $data[0] ), "The first element of data is an array." );
+        $this->assertTrue( is_array( $data[1] ), "The second element of data is an array." );
+        $this->assertEquals( 0, count( $data[0] ), "The first element of data is an empty array." );
+        $this->assertEquals( 0, count( $data[1] ), "The second element of data is an empty array." );
+    }
 
 }

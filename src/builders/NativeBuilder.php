@@ -65,8 +65,8 @@ abstract class NativeBuilder {
         }
     }
 
-    public static function addToRegistry($fullyQualifiedType, $builderInstance) {
-        self::$registry[$fullyQualifiedType] = $builderInstance;
+    public static function addToRegistry($fullyQualifiedType, $builderInstanceFactory) {
+        self::$registry[$fullyQualifiedType] = $builderInstanceFactory;
     }
 
     public static function getRegisteredBuilder($fullyQualifiedType) {
@@ -83,11 +83,15 @@ abstract class NativeBuilder {
 
     private static function getBuilder($fullyQualifiedType): NativeBuilder {
         $builder = null;
+        $builderFactory = null;
         if (isset(self::$registry[$fullyQualifiedType])) {
-            $builder = self::$registry[$fullyQualifiedType];
+            $builderFactory = self::$registry[$fullyQualifiedType];
         } else if (isset(self::$registry["\x00"])) {
             //if no builder exists for the provided type but NullBuilder is loaded, return the NullBuilder
-            $builder = self::$registry["\x00"];
+            $builderFactory = self::$registry["\x00"];
+        }
+        if( $builderFactory ){
+            $builder = $builderFactory();
         }
         return $builder;
     }

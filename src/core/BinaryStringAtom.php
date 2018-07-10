@@ -67,7 +67,7 @@ abstract class BinaryStringAtom {
     }
 
     private static function convertValueToBinaryString($value) {
-        if( is_numeric($value) ){ $value = self::getBinaryStringFromInt($value, 1); }
+        if( is_numeric($value) && !is_string( $value ) ){ $value = self::getBinaryStringFromInt($value, 1); }
         return $value;
     }
 

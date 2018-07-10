@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use JRC\binn\core\BinaryStringAtom;
+use JRC\binn\BinnSpecification;
 
 require_once realpath(__DIR__ . '/../autoload.php');
 
@@ -54,6 +55,28 @@ class BinnSpecificationTest extends TestCase {
         $hexOutput = BinaryStringAtom::createHumanReadableHexRepresentation($output);
         $hexExpectation = BinaryStringAtom::createHumanReadableHexRepresentation($expectation);
         $this->assertEquals( $hexExpectation, $hexOutput, "The write test fails in the README instructions.");
+    }
+    
+    /**
+     * Test for rare failure case when an ASCII number string is used as the container size.
+     * 
+     * The BinnSpec failed on previous versions when a container had a size of 55, because 
+     * 55 translates to the character "7", which the code accidentally interpreted as user error 
+     * and converted to "\x07". This truncated the length of the data provided.
+     */
+    public function testSizeStringIsAsciiNumberValueCase(){
+        $header = new stdClass();
+        $header->{"created_by"} = "Jared Clemence";
+        $header->{"created_on"} = "2018-07-29";
+        
+        $binnSpec = new BinnSpecification();
+        $binary = $binnSpec->write($header);
+        $genericObj = $binnSpec->read( $binary );
+        
+        foreach( $header as $attribute=>$value ){
+            $this->assertObjectHasAttribute( $attribute, $genericObj, "The generic object should have the attribute `$attribute`, but it appears to be missing." );
+            $this->assertEquals( $value, $genericObj->{$attribute}, "The generic object should have the same value for the attribute `$attribute`." );
+        }
     }
 
 }

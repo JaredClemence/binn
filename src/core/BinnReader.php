@@ -107,14 +107,8 @@ class BinnReader {
         $count = "";
         $hasCount = $this->determineIfHasCount($type);
         if ($hasCount == true) {
-            $sizeObj = new Size();
-            $sizeObj->setByteString($size);
-            $totalSize = $sizeObj->getValue();
-            
-            $workingByteString = substr( $byteString, 0, $totalSize );
-            
             $prefixLength = strlen($type . $size);
-            $remaining = substr($workingByteString, $prefixLength);
+            $remaining = substr($byteString, $prefixLength);
             $oneByteSize = substr($remaining, 0, 1);
             $fourByteSize = substr($remaining, 0, 4);
             if (ord($oneByteSize & "\x7F") == 0 || ord($oneByteSize) >> 7 == 1) {

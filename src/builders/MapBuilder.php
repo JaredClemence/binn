@@ -9,24 +9,30 @@
 namespace JRC\binn\builders;
 use JRC\binn\builders\ArrayBuilder;
 use JRC\binn\core\BinnNumber;
+use JRC\binn\core\ObjectContainerKey;
 
 /**
  * @author jaredclemence
  */
 class MapBuilder extends ArrayBuilder {
-    protected function extractKey($data, $lastPosition) {
+    protected function extractKey($data, $lastPosition) : ObjectContainerKey {
         $substring = substr( $data, $lastPosition );
-        $keyLength = 4;
-        $keyString = substr( $substring, 0, $keyLength );
-        $nextPosition = $lastPosition + $keyLength;
+        $keyValue = substr( $substring, 0, 4 );
+        
+        $keyData = new ObjectContainerKey();
+        $keyData->setKeyValue($keyValue);
+        
         $binnNumber = new BinnNumber();
-        $binnNumber->setByteString($keyString);
+        $binnNumber->setByteString($keyValue);
         $key = $binnNumber->getValue();
+        $keyData->setKey( $key );
+        
         unset( $binnNumber );
         unset( $keyLength );
         unset( $keyString );
         unset( $substring );
-        return [$key, $nextPosition];
+        
+        return $keyData;
     }
 
     protected function convertKeyToKeyByteString($key) {

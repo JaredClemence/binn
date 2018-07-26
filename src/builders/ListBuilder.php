@@ -8,6 +8,8 @@
 
 namespace JRC\binn\builders;
 use JRC\binn\builders\ArrayBuilder;
+use JRC\binn\core\ObjectContainerKey;
+
 /**
  * @author jaredclemence
  */
@@ -26,10 +28,13 @@ class ListBuilder extends ArrayBuilder {
      * @param type $lastPosition
      * @return array [ substring, indexToNextStartPosition ]
      */
-    protected function extractKey($data, $lastPosition) {
+    protected function extractKey($data, $lastPosition) : ObjectContainerKey {
+        $keyData = new ObjectContainerKey();
+        
         $this->incrementCurKey();
         $nextPosition = $lastPosition;
-        return [$this->getCurKey(), $nextPosition];
+        $keyData->setKey($this->getCurKey());
+        return $keyData;
     }
 
     private function resetCurKey() {

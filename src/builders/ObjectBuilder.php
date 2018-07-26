@@ -9,6 +9,7 @@
 namespace JRC\binn\builders;
 
 use JRC\binn\builders\ContainerBuilder;
+use JRC\binn\core\ObjectContainerKey;
 use JRC\binn\core\Size;
 
 /**
@@ -35,13 +36,18 @@ class ObjectBuilder extends ContainerBuilder {
      * @param int $lastPosition
      * @return arary [ $stringKey, $nextPosition ] 
      */
-    protected function extractKey($data, $lastPosition) {
+    protected function extractKey($data, $lastPosition) : ObjectContainerKey {
         $substring = substr( $data, $lastPosition );
-        $keySizeString = $substring[0];
-        $keySize = $this->convertKeySizeStringToValue( $keySizeString );
-        $keyText = substr( $substring, 1, $keySize );
-        $nextPosition = $lastPosition + 1 /* key length */ + $keySize /* key text length */;
-        return [ $keyText, $nextPosition ];
+        $containerKey = new ObjectContainerKey();
+        $containerKey->readKeySize( $substring, 1 );
+        
+        $keyValueLength = $containerKey->getKeyValueLength();
+        $keySizeLength = $containerKey->getKeyValueLength();
+        
+        $keyText = substr( $substring, $keySizeLength, $keyValueLength );
+        $containerKey->setKeyValue( $keyText );
+        $containerKey->setKey( $keyText );
+        return $containerKey;
     }
     
     protected function convertKeyToKeyByteString( $key ){

@@ -146,7 +146,7 @@ class BinnReader {
             if ($this->isStringOrBlobContainer($typeString) == true) {
                 //if the size is a string, then it describes ONLY the length of the string WITHOUT the null byte.
                 $sizeOfString = $containerSize;
-                $containerSize = $this->getContainerSizeForStringOrBlob($sizeOfString);
+                $containerSize = $this->getContainerSizeForStringOrBlob($sizeOfString, strlen( $sizeString) );
             }
         } else {
             $type = new Type();
@@ -167,13 +167,12 @@ class BinnReader {
         return $isStringOrBlob;
     }
 
-    private function getContainerSizeForStringOrBlob($sizeOfStringWithoutNull) {
+    private function getContainerSizeForStringOrBlob($sizeOfStringWithoutNull, $sizeLength) {
         $nullByteLength = 1;
         $dataLength = $sizeOfStringWithoutNull + $nullByteLength;
         
         $typeLength = 1;
         $countLength = 0; //strings and blobs have no count
-        $sizeLength = 1;
         
         $containerSize = $typeLength + $sizeLength + $countLength + $dataLength;
         

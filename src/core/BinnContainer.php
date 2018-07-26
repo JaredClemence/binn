@@ -77,7 +77,21 @@ class BinnContainer {
         foreach( $vars as $key=>$value ){
             $std->$key = BinaryStringAtom::createHumanReadableHexRepresentation($value);
         }
-        var_dump( $std );
+        $count = $this->count;
+        $data = $this->data;
+        $size = $this->size;
+        $type = $this->type;
+        $hexType = BinaryStringAtom::createHumanReadableHexRepresentation($type);
+        $hexSize = BinaryStringAtom::createHumanReadableHexRepresentation($size);
+        $hexCount = BinaryStringAtom::createHumanReadableHexRepresentation($count);
+        $hexData = BinaryStringAtom::createHumanReadableHexRepresentation($data);
+        echo <<<DUMPHEX
+BinnContainer:
+    Type: $hexType
+    Size: $hexSize
+    Count: $hexCount
+    Data: $hexData
+DUMPHEX;
     }
 
 }

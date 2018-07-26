@@ -244,5 +244,26 @@ class BinnReaderTest extends TestCase {
             ]
         ];
     }
+    
+    /**
+     * This is a test case that arises out of a bug in version 1.0-alpha.
+     * 
+     * The problem is discovered to be that the hex value of the size is "30", which is the string character "0".
+     * 
+     * When testing if a size is present, the statement if( $sizeString ) is being interpreted as if( "0" ), and PHP reads this as false,
+     * so the size was not being used to determine the data length.
+     * 
+     * This has been fixed by changing the if statement so that size is now used as long as it is not null and is not an empty string.
+     */
+    public function testCase1(){
+        $data = "e2 30 02 04 64 61 74 65 a1 19 32 30 31 38 2d 30 37 2d 32 35 20 32 33 3a 31 34 3a 32 34 2b 30 30 3a 30 30 00 05 76 61 6c 75 65 a0 03 4d 79 61 00";
+        $compressedHex = str_replace(" ", "", $data);
+        $binaryData = hex2bin($compressedHex);
+        $reader = new BinnReader();
+        $resultContainer = $reader->readNext($binaryData);
+        /* @var $resultContainer BinnContainer */
+        $expectedDataLong = "04 64 61 74 65 a1 19 32 30 31 38 2d 30 37 2d 32 35 20 32 33 3a 31 34 3a 32 34 2b 30 30 3a 30 30 00 05 76 61 6c 75 65 a0 03 4d 79 61 00";
+        $this->assertEquals( $expectedDataLong, BinaryStringAtom::createHumanReadableHexRepresentation($resultContainer->data), "The data is successfully extracted." );
+    }
 
 }

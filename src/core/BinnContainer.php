@@ -70,5 +70,14 @@ class BinnContainer {
     public function getCount() {
         return $this->count;
     }
+    
+    public function dumpHex(){
+        $std = new \stdClass();
+        $vars = get_object_vars($this);
+        foreach( $vars as $key=>$value ){
+            $std->$key = BinaryStringAtom::createHumanReadableHexRepresentation($value);
+        }
+        var_dump( $std );
+    }
 
 }

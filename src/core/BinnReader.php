@@ -139,7 +139,7 @@ class BinnReader {
     }
 
     private function getBinnContainerStringSizeByTypeStringAndSizeString($typeString, $sizeString) {
-        if ($sizeString) {
+        if ($sizeString!==null && $sizeString !== "" ) {
             $sizeNumber = new BinnNumber();
             $sizeNumber->setByteString($sizeString);
             $containerSize = $sizeNumber->getValue();

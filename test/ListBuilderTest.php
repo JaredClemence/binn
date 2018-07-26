@@ -39,4 +39,16 @@ class ListBuilderTest extends TestCase {
             ["\x03", "\x20\x7B\x41\xFE\x38\x40\x03\x15", [123,-456,789]]
         ];
     }
+    /**
+     * This test case is generated from a bug report on 1.0-alpha
+     */
+    public function testCase1(){
+        $hex = "e03301e230020464617465a119323031382d30372d32352032333a31343a32342b30303a3030000576616c7565a0034d796100";
+        $count = "01";
+        $data = "e230020464617465a119323031382d30372d32352032333a31343a32342b30303a3030000576616c7565a0034d796100";
+        $builder = new Builder();
+        $builder->read(hex2bin($count), hex2bin($data));
+        $result = $builder->make();
+        $this->assertTrue( is_array( $result ) );
+    }
 }

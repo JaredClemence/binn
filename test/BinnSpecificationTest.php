@@ -79,4 +79,55 @@ class BinnSpecificationTest extends TestCase {
         }
     }
 
+    public function testSpecificFailure(){
+        $obj = $this->makeProblemObject();
+        $binnSpec = new \JRC\binn\BinnSpecification();
+        $binn = $binnSpec->write($obj);
+        $result = $binnSpec->read($binn);
+        $this->assertInstanceOf( stdClass::class, $result );
+    }
+    
+    private function makeProblemObject() {
+        $obj = new stdClass();
+        $obj->uid = "396695e64b47b6de6069029adaa04f4720180725155836";
+        $obj->uid_history = [
+            $this->makeHistory( $obj->uid )
+        ];
+        $obj->name = "Ritchie, Mya";
+        $obj->name_history = [
+            $this->makeHistory($obj->name)
+        ];
+        $obj->lastName = "Ritchie";
+        $obj->lastName_history = [
+            $this->makeHistory($obj->lastName)
+        ];
+        $obj->firstName = "Mya";
+        $obj->firstName_history = [
+            $this->makeHistory( $obj->firstName )
+        ];
+        $obj->dob = new \DateTime( "2008-08-24 19:55:48", new \DateTimeZone("America/Los_Angeles" ) );
+        $secondDate = new \DateTime( "2018-07-25 15:58:36", new \DateTimeZone("America/Los_Angeles" ) );
+//        $obj->dob_history = [ 
+//            $this->makeHistory($obj->dob),
+//            $this->makeHistory($secondDate)
+//        ];
+        $obj->visitDate = $secondDate;
+//        $obj->visitDate_history = [
+//            $this->makeHistory($secondDate),
+//            $this->makeHistory($obj->dob)
+//        ];
+        $obj->dov = $secondDate;
+//        $obj->dov_history = [
+//            $this->makeHistory($secondDate),
+//            $this->makeHistory($obj->dob)
+//        ];
+        return $obj;
+    }
+
+    private function makeHistory($value) {
+        $history = new stdClass();
+        $history->date = new \DateTime("now");
+        $history->value = $value;
+        return $history;
+    }
 }

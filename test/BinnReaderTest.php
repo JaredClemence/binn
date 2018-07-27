@@ -269,6 +269,10 @@ class BinnReaderTest extends TestCase {
     /**
      * An error coming from use of the version 1.0.1-alpha reveals that string containers with 4-byte sizes are incorrectly read.
      * 
+     * The error that occurred in this case relates to the manner in which the key-value object was being set and used.
+     * The value of the key was not being properly interpreted.
+     * 
+     * Fixed: 27 Jul 2018
      */
     public function testCase2(){
         $data = "a0 80 00 01 00 f5 89 14 e3 f1 31 85 a5 97 cc cb 0e 58 05 44 80 15 87 33 97 ad c4 5c c6 c7 58 5e 83 a3 42 d7 e3 9a b1 19 96 9f 4d 87 09 93 6b a0 03 24 b6 03 23 9f 7a ee f4 07 04 36 20 d8 3e 05 9d f7 f6 39 b4 44 9d df 56 a9 d7 54 24 72 1a d8 66 66 59 09 6c 99 e8 e5 47 71 ad 37 59 3a 3a 08 ef e4 77 1b 3d 11 63 dd 61 aa 89 d0 e3 e6 0c dd 5d b4 c1 60 12 80 5b 27 10 54 91 b2 c0 17 9d 5a c1 5e 50 53 95 9e 05 e4 06 dd a4 1f ee 34 2a 68 55 54 96 16 9f 95 5c b8 e4 9d d3 9a a0 af c1 b9 64 01 bc 7e 51 1e 08 b1 fd 31 54 39 69 c0 83 42 8c bd e8 f7 08 9a f9 d3 9a 2a de a8 b0 0b ef 4c 2a a8 b4 0a 66 a8 c1 53 a3 dc 76 29 0d 51 12 21 1c 3c 0b ee 2c b2 ef d5 a5 0b eb 2d 1b 07 6a 51 0b f7 94 a2 99 dd a5 b1 a4 dc 7e ea 48 af 04 54 40 20 75 67 8b df 17 c1 61 45 56 d5 a8 9b b7 d7 f5 d3 c8 99 42 00";
@@ -283,6 +287,18 @@ class BinnReaderTest extends TestCase {
         $this->assertEquals( "\x00", $lastChar, "The last character of the string selection is a null byte." );
     }
     
+    /**
+     * An error coming from use of the version 1.0.1-alpha reveals that string containers with 4-byte sizes are incorrectly read.
+     * 
+     * This test builds off of test case 2.
+     * This test case previously failed, because the object was using the string length as the key length, so instead of extracting 1 or 4 bytes for a size string, it would offset by 10 bytes and then extract 10 bytes, this shift 
+     * caused text values to contain non-ascii binary, and caused future elements to have incorrect key-value formatting.
+     * 
+     * Further complications were observed in an if statement that was looking for an indication that a size field was 4 bytes long (indicated by a 1 bit in the most-significant spot). The flag check of "\x80" & $char produced "\x00" as the result, which was 
+     * interpreted by PHP as a string of length 1, which evaluates to true... all size fields were assumed to be 4-bytes (incorrectly)
+     * 
+     * Fixed: 27 Jul 2018
+     */
     public function testCase3(){
         $data = "e0 3d 01 e2 3a 02 04 64 61 74 65 a1 19 32 30 31 37 2d 30 31 2d 31 39 20 31 33 3a 34 31 3a 34 39 2d 30 38 3a 30 30 00 05 76 61 6c 75 65 e2 10 02 04 64 69 61 73 20 42 03 73 79 73 20 7d";
         $compressedHex = str_replace(" ", "", $data);

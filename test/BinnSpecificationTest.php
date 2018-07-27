@@ -51,13 +51,13 @@ class BinnSpecificationTest extends TestCase {
         $output = $binnSpecification->write($a);
 
         //4. Store output or transmit output to a recipient.
-        
+
         $expectation = "\xe2\x2c\x03\x03\x6f\x6e\x65\x20\x01\x05\x74\x68\x72\x65\x65\xe2\x17\x02\x03\x63\x61\x74\xa0\x03\x63\x61\x74\x00\x03\x64\x6f\x67\xa0\x03\x64\x6f\x67\x00\x03\x74\x77\x6f\x20\x02";
         $hexOutput = BinaryStringAtom::createHumanReadableHexRepresentation($output);
         $hexExpectation = BinaryStringAtom::createHumanReadableHexRepresentation($expectation);
-        $this->assertEquals( $hexExpectation, $hexOutput, "The write test fails in the README instructions.");
+        $this->assertEquals($hexExpectation, $hexOutput, "The write test fails in the README instructions.");
     }
-    
+
     /**
      * Test for rare failure case when an ASCII number string is used as the container size.
      * 
@@ -65,34 +65,34 @@ class BinnSpecificationTest extends TestCase {
      * 55 translates to the character "7", which the code accidentally interpreted as user error 
      * and converted to "\x07". This truncated the length of the data provided.
      */
-    public function testSizeStringIsAsciiNumberValueCase(){
+    public function testSizeStringIsAsciiNumberValueCase() {
         $header = new stdClass();
         $header->{"created_by"} = "Jared Clemence";
         $header->{"created_on"} = "2018-07-29";
-        
+
         $binnSpec = new BinnSpecification();
         $binary = $binnSpec->write($header);
-        $genericObj = $binnSpec->read( $binary );
-        
-        foreach( $header as $attribute=>$value ){
-            $this->assertObjectHasAttribute( $attribute, $genericObj, "The generic object should have the attribute `$attribute`, but it appears to be missing." );
-            $this->assertEquals( $value, $genericObj->{$attribute}, "The generic object should have the same value for the attribute `$attribute`." );
+        $genericObj = $binnSpec->read($binary);
+
+        foreach ($header as $attribute => $value) {
+            $this->assertObjectHasAttribute($attribute, $genericObj, "The generic object should have the attribute `$attribute`, but it appears to be missing.");
+            $this->assertEquals($value, $genericObj->{$attribute}, "The generic object should have the same value for the attribute `$attribute`.");
         }
     }
 
-    public function testSpecificFailure(){
+    public function testSpecificFailure() {
         $obj = $this->makeProblemObject();
         $binnSpec = new \JRC\binn\BinnSpecification();
         $binn = $binnSpec->write($obj);
         $result = $binnSpec->read($binn);
-        $this->assertInstanceOf( stdClass::class, $result );
+        $this->assertInstanceOf(stdClass::class, $result);
     }
-    
+
     private function makeProblemObject() {
         $obj = new stdClass();
         $obj->uid = "396695e64b47b6de6069029adaa04f4720180725155836";
         $obj->uid_history = [
-            $this->makeHistory( $obj->uid )
+            $this->makeHistory($obj->uid)
         ];
         $obj->name = "Ritchie, Mya";
         $obj->name_history = [
@@ -104,10 +104,10 @@ class BinnSpecificationTest extends TestCase {
         ];
         $obj->firstName = "Mya";
         $obj->firstName_history = [
-            $this->makeHistory( $obj->firstName )
+            $this->makeHistory($obj->firstName)
         ];
-        $obj->dob = new \DateTime( "2008-08-24 19:55:48", new \DateTimeZone("America/Los_Angeles" ) );
-        $secondDate = new \DateTime( "2018-07-25 15:58:36", new \DateTimeZone("America/Los_Angeles" ) );
+        $obj->dob = new \DateTime("2008-08-24 19:55:48", new \DateTimeZone("America/Los_Angeles"));
+        $secondDate = new \DateTime("2018-07-25 15:58:36", new \DateTimeZone("America/Los_Angeles"));
 //        $obj->dob_history = [ 
 //            $this->makeHistory($obj->dob),
 //            $this->makeHistory($secondDate)
@@ -131,7 +131,7 @@ class BinnSpecificationTest extends TestCase {
         $history->value = $value;
         return $history;
     }
-    
+
     /**
      * Problems have been noticed in the 1.0.1-alpha release dealing with the conversion of 
      * large objects. This test ensures that large objects with lengthy keys are written and read 
@@ -140,43 +140,69 @@ class BinnSpecificationTest extends TestCase {
      * @param type $object
      * @dataProvider provideLargeObjectCases
      */
-    public function testLargeObjectConversion( $object, $expectError ){
-        $this->markTestSkipped();
+    public function testLargeObjectConversion($object, $expectError) {
+        //$this->markTestSkipped();
         $error = null;
         $spec = new BinnSpecification();
-        try{
+        try {
             $string = $spec->write($object);
-            $newObj = $spec->read( $string );
+            $newObj = $spec->read($string);
             $keys = get_object_vars($object);
-            foreach( $object as $key => $value ){
-                $this->assertObjectHasAttribute( $key, $newObj, "The new object has an attribute set for the key value of '$key'." );
-                $this->assertEquals( $value, $newObj->$key, "The value that is restored equals the value that was stored." );
+            foreach ($object as $key => $value) {
+                if( is_array( $newObj ) ){
+                    $this->assertArrayHasKey($key, $newObj, "The new object has an attribute set for the key value of '$key'.");
+                    $this->assertEquals($value, $newObj[$key], "The value that is restored equals the value that was stored.");
+                }else{
+                    $this->assertObjectHasAttribute($key, $newObj, "The new object has an attribute set for the key value of '$key'.");
+                    $this->assertEquals($value, $newObj->$key, "The value that is restored equals the value that was stored.");
+                }
             }
-        }catch( \Exception $e ){
+        } catch (\Exception $e) {
             $error = $e;
         }
-        if( $expectError ){
-            $this->assertNotNull( $error, "An error was expected during test." );
-        }else{
-            $this->assertNull( $error, "No error is generated during test." );
+        if ($expectError) {
+            $this->assertNotNull($error, "An error was expected during test.");
+        } else {
+            $this->assertNull($error, "No error is generated during test.");
         }
     }
-    
-    public function provideLargeObjectCases(){
+
+    public function provideLargeObjectCases() {
         return [
-            'Lengthy Keys'=>[ $this->addLengthyKeys( new stdClass(), 255 ), false ],
-            'Lengthy Keys With Error'=>[ $this->addLengthyKeys( new stdClass(), 256 ), true ]
+            'Lengthy Keys' => [$this->addLengthyKeys(new stdClass(), 255), false],
+            'Lengthy Keys With Error' => [$this->addLengthyKeys(new stdClass(), 256), true],
+            'Big Numbers' => [$this->addBigNumericIndices(new stdClass(), 4), false],
+            'Big Numbers With Error' => [$this->addBigNumericIndices(new stdClass(), 5), true],
         ];
     }
 
     public function addLengthyKeys(stdClass $object, $length = 255) {
         $factory = Factory::create();
-        for( $i = 0; $i < 5; $i++ ){
+        for ($i = 0; $i < 5; $i++) {
             $key = "";
-            while( strlen( $key ) < $length ){
+            while (strlen($key) < $length) {
                 $key .= $factory->randomLetter;
             }
-            $object->$key = implode( " ", $factory->words(50) );
+            $object->$key = implode(" ", $factory->words(50));
+        }
+        return $object;
+    }
+
+    public function addBigNumericIndices(stdClass $object, $byteLength) {
+        $factory = Factory::create();
+        for ($i = 0; $i < 5; $i++) {
+            $binary = "";
+            while (strlen($binary) < $byteLength) {
+                $number = rand(1, 255);
+                $char = chr($number);
+                $binary .= $char;
+            }
+            $hex_string = bin2hex($binary);
+            if (strlen($hex_string) % 2 == 1) {
+                $hex_string = "0" . $hex_string;
+            }
+            $bigInt = hexdec($hex_string);
+            $object->$bigInt = implode(" ", $factory->words(55));
         }
         return $object;
     }

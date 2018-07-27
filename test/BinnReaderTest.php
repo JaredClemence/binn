@@ -311,5 +311,14 @@ class BinnReaderTest extends TestCase {
         $expectedDataLong = "e2 3a 02 04 64 61 74 65 a1 19 32 30 31 37 2d 30 31 2d 31 39 20 31 33 3a 34 31 3a 34 39 2d 30 38 3a 30 30 00 05 76 61 6c 75 65 e2 10 02 04 64 69 61 73 20 42 03 73 79 73 20 7d";
         $this->assertEquals( $expectedDataLong, BinaryStringAtom::createHumanReadableHexRepresentation($resultContainer->data), "The data is successfully extracted." );
     }
+    
+    public function testEmptyStringShortSizeReading(){
+        $binary = "\xa0\x00\x00";
+        $reader = new BinnReader();
+        $container = $reader->read($binary);
+        $this->assertEquals( "\xa0", $container->type, "The type is 0xA0" );
+        $this->assertEquals( "\x00", $container->size, "The size is 0x00" );
+        $this->assertEquals( "\x00", $container->data, "The data is 0x00" );
+    }
 
 }

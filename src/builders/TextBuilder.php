@@ -34,6 +34,7 @@ class TextBuilder extends NativeBuilder {
     public function write($subtype, $nativeString) {
         $sizeBytes = $this->determineSizeBytes( $nativeString );
         $nullByte = "\x00";
+        if( $sizeBytes == "" ) $sizeBytes = "\x00";
         $binnContainer = $subtype . $sizeBytes . $nativeString . $nullByte;
         return $binnContainer;
     }

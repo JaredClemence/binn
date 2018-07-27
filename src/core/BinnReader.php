@@ -85,8 +85,8 @@ class BinnReader {
             $typeLength = strlen($type);
             $remaining = substr($byteString, $typeLength);
             $oneByteSize = substr($remaining, 0, 1);
-            $fourByteSize = substr($remaining, 0, 4);
-            if (ord($oneByteSize & "\x7F") == 0 || ord($oneByteSize) >> 7 == 1) {
+            $fourByteSize = substr( $remaining, 0, 4 );
+            if (ord($oneByteSize & "\x7F") == 0 && ord($oneByteSize) >> 7 == 1) {
                 $size = $fourByteSize;
             } else {
                 $size = $oneByteSize;

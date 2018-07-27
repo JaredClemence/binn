@@ -228,5 +228,17 @@ class BinnSpecificationTest extends TestCase {
         $this->assertNull( $restoredObject->two, "The null value is null as expected." );
         $this->assertEquals( [null,null], $restoredObject->three, "The null array returns a null array with two elements." );
     }
+    
+    /**
+     * Binn Spec must handle the writing and reading of empty arrays.
+     */
+    public function testEmptyList(){
+       $list = [];
+       $binnSpec = new JRC\binn\BinnSpecification();
+       $binary = $binnSpec->write($list);
+       $this->assertEquals( "e0 03 00", BinaryStringAtom::createHumanReadableHexRepresentation($binary), "The Binn specification writes the empty object in the correct Binn Format." );
+       $obj = $binnSpec->read($binary);
+       $this->assertEquals( [], $obj, "The Binn specificatoin restores the binary value to an empty array correctly." );
+    }
 
 }

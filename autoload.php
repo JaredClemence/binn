@@ -40,3 +40,5 @@ foreach( $psr4 as $namespace=>$relPath ){
     $function = makePsr4AutoloadFunction( $namespace, $relPath );
     spl_autoload_register($function);
 }
+
+require_once realpath( __DIR__ . '/vendor/autoload.php' );

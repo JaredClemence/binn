@@ -14,5 +14,8 @@
         "psr-4": {
             "JRC\\binn\\": "src/"
         }
+    },
+    "require-dev": {
+        "fzaninotto/faker": "^1.8"
     }
 }

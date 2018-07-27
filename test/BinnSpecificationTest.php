@@ -3,6 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use JRC\binn\core\BinaryStringAtom;
 use JRC\binn\BinnSpecification;
+use Faker\Factory;
 
 require_once realpath(__DIR__ . '/../autoload.php');
 
@@ -130,4 +131,56 @@ class BinnSpecificationTest extends TestCase {
         $history->value = $value;
         return $history;
     }
+    
+    /**
+     * Problems have been noticed in the 1.0.1-alpha release dealing with the conversion of 
+     * large objects. This test ensures that large objects with lengthy keys are written and read 
+     * correctly.
+     * 
+     * @param type $object
+     * @dataProvider provideLargeObjectCases
+     */
+    public function testLargeObjectConversion( $object, $expectError ){
+        $error = null;
+        $spec = new BinnSpecification();
+        try{
+            $string = $spec->write($object);
+            $newObj = $spec->read( $string );
+            var_dump( $object );
+            var_dump( $newObj );
+            die();
+            $keys = get_object_vars($object);
+            foreach( $object as $key => $value ){
+                $this->assertObjectHasAttribute( $key, $newObj, "The new object has an attribute set for the key value of '$key'." );
+                $this->assertEquals( $value, $newObj->$key, "The value that is restored equals the value that was stored." );
+            }
+        }catch( \Exception $e ){
+            $error = $e;
+        }
+        if( $expectError ){
+            $this->assertNotNull( $error, "An error was expected during test." );
+        }else{
+            $this->assertNull( $error, "No error is generated during test." );
+        }
+    }
+    
+    public function provideLargeObjectCases(){
+        return [
+            'Lengthy Keys'=>[ $this->addLengthyKeys( new stdClass(), 255 ), false ],
+//            'Lengthy Keys With Error'=>[ $this->addLengthyKeys( new stdClass(), 256 ), true ]
+        ];
+    }
+
+    public function addLengthyKeys(stdClass $object, $length = 255) {
+        $factory = Factory::create();
+        for( $i = 0; $i < 5; $i++ ){
+            $key = "";
+            while( strlen( $key ) < $length ){
+                $key .= $factory->randomLetter;
+            }
+            $object->$key = implode( " ", $factory->words(50) );
+        }
+        return $object;
+    }
+
 }

@@ -12,6 +12,8 @@ use JRC\binn\builders\ContainerBuilder;
 use JRC\binn\core\ObjectContainerKey;
 use JRC\binn\core\Size;
 
+use Exception;
+
 /**
  * Description of ObjectBuilder
  *
@@ -51,18 +53,21 @@ class ObjectBuilder extends ContainerBuilder {
         return $containerKey;
     }
     
+    /**
+     * BinnSpecification notes that Object keys are limited to 255 bytes in length.
+     * This makes the size field unusual. The full 8 bits are used to indicate size.
+     * This size field is NOT a standard BinnNumber which can be one byte OR four bytes.
+     * @param string $key
+     * @return string
+     */
     protected function convertKeyToKeyByteString( $key ){
         $stringKey = (string) $key;
         $length = strlen( $stringKey );
         $keySizeByte = chr( $length );
+        if( $length > 255 ){
+            throw new Exception("Unable to write binary data in Binn format for objects with attribute names that are longer than 255 characters.");
+        }
         $keyByteString = $keySizeByte . $stringKey; // no null byte on keys
         return $keyByteString;
-    }
-
-    private function convertKeySizeStringToValue($keySizeString) {
-        $keySizeObj = new Size();
-        $keySizeObj->setByteString($keySizeString);
-        $keySize = $keySizeObj->getValue();
-        return $keySize;
     }
 }

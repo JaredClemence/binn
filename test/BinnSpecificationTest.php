@@ -206,5 +206,27 @@ class BinnSpecificationTest extends TestCase {
         }
         return $object;
     }
+    
+    /**
+     * Binn Spec must handle the storing of null elements.
+     */
+    public function testNullElements(){
+        $object = new stdClass();
+        $object->one = "1";
+        $object->two = null;
+        $object->three = [ null, null ];
+        
+        $spec = new BinnSpecification();
+        $binaryString = $spec->write( $object );
+        $restoredObject = $spec->read( $binaryString );
+        
+        $this->assertTrue( is_object( $restoredObject ), "Restored object is an object." );
+        $this->assertObjectHasAttribute( "one", $restoredObject, "All attributes are set on the restored object." );
+        $this->assertObjectHasAttribute( "two", $restoredObject, "All attributes are set on the restored object." );
+        $this->assertObjectHasAttribute( "three", $restoredObject, "All attributes are set on the restored object." );
+        $this->assertEquals( $object->one, $restoredObject->one, "The non-null value is restored correctly." );
+        $this->assertNull( $restoredObject->two, "The null value is null as expected." );
+        $this->assertEquals( [null,null], $restoredObject->three, "The null array returns a null array with two elements." );
+    }
 
 }

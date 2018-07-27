@@ -8,6 +8,7 @@
 
 namespace JRC\binn\builders;
 use JRC\binn\builders\KeyValueByteGenerator;
+use JRC\binn\core\KeyValue;
 /**
  * Description of MapKeyValueGenerator
  *
@@ -29,4 +30,16 @@ class MapKeyValueGenerator extends KeyValueByteGenerator{
         }
         return $byteRepresentation;
     }
+
+    protected function extractKeyBytes($truncatedString) : KeyValue {
+        $keyBytes = substr( $truncatedString, 0, 4 );
+        $hex_string = bin2hex($keyBytes);
+        if( strlen( $hex_string ) % 2 == 1 ){
+            $hex_string = "0" . $hex_string;
+        }
+        $bigInt = hexdec($hex_string);
+        $keyValue = new KeyValue("", $keyBytes, $bigInt);
+        return $keyValue;
+    }
+
 }

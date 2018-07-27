@@ -141,14 +141,12 @@ class BinnSpecificationTest extends TestCase {
      * @dataProvider provideLargeObjectCases
      */
     public function testLargeObjectConversion( $object, $expectError ){
+        $this->markTestSkipped();
         $error = null;
         $spec = new BinnSpecification();
         try{
             $string = $spec->write($object);
             $newObj = $spec->read( $string );
-            var_dump( $object );
-            var_dump( $newObj );
-            die();
             $keys = get_object_vars($object);
             foreach( $object as $key => $value ){
                 $this->assertObjectHasAttribute( $key, $newObj, "The new object has an attribute set for the key value of '$key'." );
@@ -167,7 +165,7 @@ class BinnSpecificationTest extends TestCase {
     public function provideLargeObjectCases(){
         return [
             'Lengthy Keys'=>[ $this->addLengthyKeys( new stdClass(), 255 ), false ],
-//            'Lengthy Keys With Error'=>[ $this->addLengthyKeys( new stdClass(), 256 ), true ]
+            'Lengthy Keys With Error'=>[ $this->addLengthyKeys( new stdClass(), 256 ), true ]
         ];
     }
 

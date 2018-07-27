@@ -49,6 +49,10 @@ class BinnContainer {
         $this->data = $data;
     }
     
+    public function __toString() {
+        return $this->getByteString();
+    }
+    
     public function getByteString(){
         $type = new Type();
         $type->setByteString($this->type);

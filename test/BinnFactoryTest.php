@@ -79,4 +79,26 @@ class BinnFactoryTest extends TestCase {
             "OBJECT"=>[json_decode("{\"jargonizing\":-456,\"jumpy\":789,\"schnozzles\":123}"),"\xE2\x28\x03\x0Bjargonizing\x41\xFE\x38\x05jumpy\x40\x03\x15\x0Aschnozzles\x20\x7B"],
         ];
     }
+    
+    public function testObjectCreation(){
+        $key = "";
+        $value = "";
+        
+        while( strlen( $key ) < 255 ){
+            $key .= "a";
+            $value .= "Z";
+        }
+        while( strlen( $value ) < 1200 ){
+            $value .= "Z";
+        }
+        $object = new stdClass();
+        $object->$key = $value;
+        $factory = new BinnFactory();
+        $byteString = $factory->blindWrite($object);
+        
+        $reader = new NativeFactory();
+        $obj = $reader->read($byteString);
+        $this->assertObjectHasAttribute( $key, $obj, "The keys match." );
+        $this->assertEquals( $object->$key, $obj->$key, "The values match." );
+    }
 }

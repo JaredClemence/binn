@@ -13,8 +13,7 @@ use JRC\binn\core\NativeFactory;
 use JRC\binn\core\BinnReader;
 use JRC\binn\core\Count;
 use JRC\binn\core\Size;
-use JRC\binn\core\BinnFactory;
-use JRC\binn\core\ObjectContainerKey;
+use JRC\binn\builders\KeyValueByteGenerator;
 use JRC\binn\core\BinaryStringAtom;
 
 /**
@@ -29,13 +28,14 @@ abstract class ContainerBuilder extends NativeBuilder {
         $count = $this->getCount();
         $lastPosition = 0;
         $object = $this->createEmptyContainer();
+        $keyValueGenerator = $this->getKeyValueGenerator();
         for ($i = 0; $i < $count; $i++) {
-            $keyData = $this->extractKey($data, $lastPosition);
-            /* @var $keyData ObjectContainerKey */
-            $lastPosition += strlen($keyData);
-            $key = $keyData->getKey();
-            list( $nextDataString, $lastPosition ) = $this->extractNextDataString($data, $lastPosition);
-            $value = $this->convertContainerStringToNativeElement($nextDataString);
+            $substring = substr( $data, $lastPosition );
+            $nextKeyValuePair = $keyValueGenerator->readNextKeyValuePair( $substring );
+            $lastPosition += $nextKeyValuePair->getLength();
+            $key = $nextKeyValuePair->getIndexValue();
+            $dataString = $nextKeyValuePair->getDataString();
+            $value = $this->convertContainerStringToNativeElement($dataString);
             $this->addElementAtKey($object, $key, $value);
         }
         return $object;
@@ -69,10 +69,10 @@ abstract class ContainerBuilder extends NativeBuilder {
         return $keys;
     }
 
-    abstract protected function extractKey($data, $lastPosition): ObjectContainerKey;
+    abstract protected function getKeyValueGenerator() : KeyValueByteGenerator;
 
     abstract protected function addElementAtKey(&$object, $key, $value);
-
+    
     abstract protected function createEmptyContainer();
 
     /**
@@ -137,26 +137,16 @@ abstract class ContainerBuilder extends NativeBuilder {
         //Error
     }
 
-    abstract protected function convertKeyToKeyByteString($key);
-
     private function createBinnDataStringForContainerType($nativeData) {
         $dataByteString = "";
         $keys = $this->getOrderedKeyArray($nativeData);
+        $byteGenerator = $this->getKeyValueGenerator();
         foreach ($keys as $key) {
             $value = $this->getDataFromObject($nativeData, $key);
-            $keyString = $this->convertKeyToKeyByteString($key);
-            $dataString = $this->convertDataToDataString($value);
-            $elementString = $keyString . $dataString;
-            $dataByteString .= $elementString;
+            $byteString = $byteGenerator->generateByteString( $key, $value );
+            $dataByteString .= $byteString;
         }
         return $dataByteString;
-    }
-
-    private function convertDataToDataString($value) {
-        $factory = new BinnFactory();
-        $binnContainer = $factory->blindWrite($value);
-        unset($factory);
-        return $binnContainer;
     }
 
 }

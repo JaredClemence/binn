@@ -8,6 +8,8 @@
 
 namespace JRC\binn\builders;
 use JRC\binn\builders\KeyValueByteGenerator;
+use JRC\binn\core\KeyValue;
+
 /**
  * Description of ObjectKeyValueGenerator
  *
@@ -31,6 +33,13 @@ class ObjectKeyValueGenerator extends KeyValueByteGenerator{
         }
         $byteSize = chr( $length );
         return $byteSize . $stringValue;
+    }
+
+    protected function extractKeyBytes($truncatedString) : KeyValue {
+        $size = substr( $truncatedString, 0, 1 );
+        $stringLength = ord( $size );
+        $keyString = substr( $truncatedString, 1, $stringLength );
+        return new KeyValue( $size, $keyString, $keyString );
     }
 
 }

@@ -8,6 +8,7 @@
 
 namespace JRC\binn\builders;
 use JRC\binn\builders\KeyValueByteGenerator;
+use JRC\binn\core\KeyValue;
 /**
  * Description of ListKeyValueGenerator
  *
@@ -18,4 +19,12 @@ class ListKeyValueGenerator extends KeyValueByteGenerator{
         //lists do not have keys. Just a series of well-formed values.
         return "";
     }
+
+    protected function extractKeyBytes($truncatedString) : KeyValue {
+        $this->incrementCounter();
+        $curValue = $this->getCurrentCounter();
+        $keyValue = new KeyValue("", "", $curValue);
+        return $keyValue;
+    }
+
 }

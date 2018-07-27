@@ -40,10 +40,6 @@ class ObjectContainerKey {
         if( strlen( $substring ) ){
             $char = $substring[0];
             $length = $defaultLength;
-            if( ord( "\x80" & $char ) > 0 ){
-                //4 byte string
-                $length = 4;
-            }
             $keyByteString = substr($substring, 0, $length);
             $this->setSizeBytes($keyByteString);
         }

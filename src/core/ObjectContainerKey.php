@@ -8,6 +8,7 @@
 
 namespace JRC\binn\core;
 use JRC\binn\core\Size;
+use JRC\binn\core\BinaryStringAtom;
 
 /**
  * Description of ObjectContainerKey
@@ -39,7 +40,7 @@ class ObjectContainerKey {
         if( strlen( $substring ) ){
             $char = $substring[0];
             $length = $defaultLength;
-            if( "\x80" & $char ){
+            if( ord( "\x80" & $char ) > 0 ){
                 //4 byte string
                 $length = 4;
             }

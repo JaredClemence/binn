@@ -38,11 +38,12 @@ class ObjectBuilder extends ContainerBuilder {
      */
     protected function extractKey($data, $lastPosition) : ObjectContainerKey {
         $substring = substr( $data, $lastPosition );
+        
         $containerKey = new ObjectContainerKey();
         $containerKey->readKeySize( $substring, 1 );
         
         $keyValueLength = $containerKey->getKeyValueLength();
-        $keySizeLength = $containerKey->getKeyValueLength();
+        $keySizeLength = $containerKey->getKeySizeByteLength();
         
         $keyText = substr( $substring, $keySizeLength, $keyValueLength );
         $containerKey->setKeyValue( $keyText );

@@ -33,7 +33,6 @@ abstract class ContainerBuilder extends NativeBuilder {
             $keyData = $this->extractKey($data, $lastPosition);
             /* @var $keyData ObjectContainerKey */
             $lastPosition += strlen($keyData);
-            $lastPosition += strlen($keyData);
             $key = $keyData->getKey();
             list( $nextDataString, $lastPosition ) = $this->extractNextDataString($data, $lastPosition);
             $value = $this->convertContainerStringToNativeElement($nextDataString);

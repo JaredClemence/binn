@@ -43,8 +43,12 @@ class BinnReader {
     public function read($byteString) {
         $type = $this->identifyTypeString($byteString);
         $size = $this->identifySizeString($byteString, $type);
-        $count = $this->identifyCountString($byteString, $type, $size);
-        $data = $this->identifyDataString($byteString, $type, $size, $count);
+        $totalStringSize = $this->getBinnContainerStringSizeByTypeStringAndSizeString($type, $size);
+        
+        $restrictedByteString = substr( $byteString, 0, $totalStringSize );
+        $count = $this->identifyCountString($restrictedByteString, $type, $size);
+        $data = $this->identifyDataString($restrictedByteString, $type, $size, $count);
+        
         $container = new BinnContainer();
         $container->setType($type);
         $container->setSize($size);

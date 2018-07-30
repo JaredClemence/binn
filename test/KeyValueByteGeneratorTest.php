@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use JRC\binn\builders\ListKeyValueGenerator;
 use JRC\binn\builders\MapKeyValueGenerator;
 use JRC\binn\builders\ObjectKeyValueGenerator;
+use JRC\binn\core\BinaryStringAtom;
 use Faker\Factory;
 
 require_once realpath(__DIR__ . '/../autoload.php');
@@ -128,6 +129,31 @@ class KeyValueByteGeneratorTest extends TestCase {
             [ $longKey, "\xFF$longKey", false ],
             [ $longKey . "a", null, true ]
         ];
+    }
+    
+    /**
+     * Test for bug correction in external system.
+     * 
+     * Current alpha version has following problem in external system:
+     * 
+     * Substring used is: 0b 61 70 74 5f 63 6f 6e 74 61 63 74 e0 03 00 13 61 70 74 5f 63 6f 6e
+     * The relevant portion is: 0b 61 70 74 5f 63 6f 6e 74 61 63 74 e0 03 00,
+     * but the null byte 00 in e0 03 00 is being converted to 80, which is creating a 
+     * binn container that has the count of 80 13 61 70. Naturally, there is no data to support this large count, and 
+     * an "infinite" loop is created from which the reader cannot recover.
+     * 
+     * In this test, we must assert that this resolves without altering the byte.
+     */
+    public function testObjectKeyFailureCase1(){
+        $substring = "0b 61 70 74 5f 63 6f 6e 74 61 63 74 e0 03 00 13 61 70 74 5f 63 6f 6e";
+        $asciiHex = str_replace(" ", "", $substring);
+        $binary = hex2bin($asciiHex);
+        $this->assertEquals( $substring, BinaryStringAtom::createHumanReadableHexRepresentation($binary), "The test starts with a correct binary string representation." );
+        $objectGenerator = new TestObject();
+        $nextPair = $objectGenerator->readNextKeyValuePair($binary);
+        /* @var $nextPair ContainerElement */
+        $this->assertEquals( "0b 61 70 74 5f 63 6f 6e 74 61 63 74", BinaryStringAtom::createHumanReadableHexRepresentation($nextPair->keyBytes.""), "The next key is correctly identified" );
+        $this->assertEquals( "e0 03 00", BinaryStringAtom::createHumanReadableHexRepresentation($nextPair->dataBytes.""), "The next data string is correctly identified without modification." );
     }
 
     private function convertByteStringToBigInteger($byteString) {

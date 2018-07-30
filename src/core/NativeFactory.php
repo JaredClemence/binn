@@ -15,11 +15,18 @@ class NativeFactory {
 
     public function read($byteString) {
         $binnContainer = $this->parseString($byteString);
-        $count = $binnContainer->getCount();
-        $data = $binnContainer->getData();
-        $builder = $this->selectBuilder($binnContainer);
-        $builder->read($count, $data);
-        return $builder->make();
+        try{
+            $count = $binnContainer->getCount();
+            $data = $binnContainer->getData();
+            $builder = $this->selectBuilder($binnContainer);
+            $builder->read($count, $data);
+            return $builder->make();
+        }catch( \Exception $exception ){
+            echo "\n\nUnable to process container:\n";
+            $binnContainer->dumpHex();
+            
+            throw $exception;
+        }
     }
 
     public function parseString($byteString): BinnContainer {

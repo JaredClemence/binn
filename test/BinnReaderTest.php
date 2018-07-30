@@ -320,5 +320,31 @@ class BinnReaderTest extends TestCase {
         $this->assertEquals( "\x00", $container->size, "The size is 0x00" );
         $this->assertEquals( "\x00", $container->data, "The data is 0x00" );
     }
+    
+    /**
+     * This test is related to the test in KeyValueByteGeneratorTest::testObjectKeyFailureCase1
+     * 
+     * The conversion of the byte \x00 to \x80\x13\x61\x70 occurs in the BinnReader.
+     * To assist in the isolation of this problem, we recreate the smaller problem here.
+     */
+    public function testLongStringStartingWithNullByte(){
+        $binary = "\xe0\x03\x00\x13\x61\x70\x74\x5f\x63\x6f\x6e";
+        $reader = new BinnReader();
+        $container = $reader->read( $binary );
+        /* @var $container BinnContainer */
+        $byteString = $container->data;
+        $hexByteString = BinaryStringAtom::createHumanReadableHexRepresentation($byteString);
+        $this->assertEquals( "00", $hexByteString, "The BinnReader only extracts the null byte and does not modify the null byte as a long size or count." );
+        
+        $byteString2 = $container->count;
+        $hexByteString2 = BinaryStringAtom::createHumanReadableHexRepresentation($byteString2);
+        $this->assertEquals( "00", $hexByteString2, "The BinnReader identifies that there is a zero count in this data string." );
+        
+        $this->assertEquals( 0, strlen( $container->data ), "The BinnReader identifies that this object has no key-value data." );
+        
+        $containerByteString = $container->getByteString();
+        $readableHex = BinaryStringAtom::createHumanReadableHexRepresentation($containerByteString);
+        $this->assertEquals( "e0 03 00", $readableHex, "The container can be reverse engineered to the source bytes." );
+    }
 
 }
